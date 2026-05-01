@@ -1,0 +1,61 @@
+name: Weekly Blog Update and Deploy
+
+on:
+  # 每周五凌晨1点触发（北京时间上午9点）
+  schedule:
+    - cron: '0 1 * * 5'
+  # 支持手动触发
+  workflow_dispatch:
+    inputs:
+      skip_notification:
+        description: '跳过微信推送'
+        required: false
+        default: 'false'
+
+jobs:
+  update-and-notify:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.10'
+
+      - name: Update Blog Content
+        run: |
+          python3 tools/update_blog.py --generate || true
+          git config user.email "action@github.com"
+          git config user.name "GitHub Action"
+          git add -A
+          git diff --cached --quiet || git commit -m "Weekly update $(date +'%Y-%m-%d')"
+
+      - name: Push updates to GitHub
+        run: |
+          if [ -n "$(git log --oneline -1)" ]; then
+            git push || echo "Push failed, possibly no changes"
+          fi
+
+      - name: Send WeChat Notification
+        if: inputs.skip_notification != 'true'
+        env:
+          WECOM_WEBHOOK_URL: ${{ secrets.WECOM_WEBHOOK_URL }}
+          SERVERCHAN_SCKEY: ${{ secrets.SERVERCHAN_SCKEY }}
+          PUSHPLUS_TOKEN: ${{ secrets.PUSHPLUS_TOKEN }}
+        run: |
+          # 根据配置选择推送方式
+          if [ -n "$WECOM_WEBHOOK_URL" ]; then
+            python3 tools/wechat_notify.py
+          elif [ -n "$SERVERCHAN_SCKEY" ]; then
+            python3 tools/wechat_notify.py
+          elif [ -n "$PUSHPLUS_TOKEN" ]; then
+            python3 tools/wechat_notify.py
+          else
+            echo "No WeChat notification configured (secrets not set)"
+          fi
