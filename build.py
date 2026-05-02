@@ -42,7 +42,15 @@ NAV_TREE = [
     {"id": "regulations","label":"📋 法规与指南",       "file": "/regulations/index.html"},
     {"id": "conferences","label":"🎓 会议与培训",       "file": "/conferences/index.html"},
     {"id": "journals",  "label": "📚 期刊推荐",         "file": "/resources/journals.html"},
-    {"id": "tools",     "label": "🔧 工具软件",         "file": "/resources/tools.html"},
+    {"id": "tools",  "label": "🔧 工具软件",         "file": "/resources/tools.html", "children": [
+        {"id": "t-simcyp",   "label": "SimCYP",        "file": "/resources/tools.html#simcyp"},
+        {"id": "t-gastro",   "label": "GastroPlus",    "file": "/resources/tools.html#gastroplus"},
+        {"id": "t-pksim",    "label": "PK-Sim",        "file": "/resources/tools.html#pksim"},
+        {"id": "t-mobot",    "label": "MoBot",         "file": "/resources/tools.html#mobot"},
+        {"id": "t-nonmem",   "label": "NONMEM",        "file": "/resources/tools.html#nonmem"},
+        {"id": "t-monolix",  "label": "MONOLIX",       "file": "/resources/tools.html#monolix"},
+        {"id": "t-nlmixr2",  "label": "nlmixr2",       "file": "/resources/tools.html#nlmixr2"},
+    ]},
     {"id": "tutorials", "label": "📖 学习资源",         "file": "/tutorials/index.html", "children": [
         {"id": "tut-intro",    "label": "入门教程",    "file": "/tutorials/index.html"},
         {"id": "tut-advanced", "label": "进阶教程",   "file": "/tutorials/index.html"},
@@ -820,61 +828,58 @@ TOOL_DATA = {
 }
 
 def build_tools_page():
-    """构建工具软件页：左侧树形导航 + 右侧详情面板"""
-    # 左侧树
-    tree_items = []
-    first_id = None
-    for i, (tid, t) in enumerate(TOOL_DATA.items()):
-        if i == 0: first_id = tid
-        tree_items.append(
-            '<div class="tree-item" data-tool="' + tid + '" onclick="showTool(\'' + tid + '\')">'
-            '<span class="tree-icon">' + ('🔬' if i < 4 else '📊') + '</span>'
-            + t['name'] + '</div>'
-        )
-
-    # 右侧详情面板
-    panels = []
+    """构建工具软件页：7工具卡片网格，每卡片含功能/教程/案例"""
+    tool_cards = []
     for tid, t in TOOL_DATA.items():
-        features_li = ''.join('<li>' + f + '</li>' for f in t['features'])
-        cases_li = ''.join('<li>' + c + '</li>' for c in t['cases'])
-        resources = ''.join(
-            '<a class="res-link" href="' + r[1] + '" target="_blank" rel="noopener">🔗 ' + r[0] + '</a>'
-            for r in t['tutorials']
+        badge_bg = ("#e8f5e9" if "金标准" in t["badge"] else
+                    "#e3f2fd" if "开源" in t["badge"] or "免费" in t["badge"] else "#fff3e0")
+        badge_fg = ("#2e7d32" if "金标准" in t["badge"] else
+                    "#1565c0" if "开源" in t["badge"] or "免费" in t["badge"] else "#e65100")
+        features_li = "".join("<li>" + f + "</li>" for f in t["features"])
+        tutorials_links = "".join(
+            "<a class=\"res-link\" href=\"" + r[1] + "\" target=\"_blank\" rel=\"noopener\">📎 " + r[0] + " ↗</a>"
+            for r in t["tutorials"]
         )
-        panels.append(
-            '<div class="tool-detail" id="tool-' + tid + '">'
-            '<h2>' + t['name'] + ' <span class="tool-badge" style="background:'
-            + ('#e8f5e9;color:#2e7d32' if '金标准' in t['badge'] else
-               '#e3f2fd;color:#1565c0' if '免费' in t['badge'] or '开源' in t['badge'] else
-               '#fff3e0;color:#e65100') + '">' + t['badge'] + '</span></h2>'
-            '<p class="tool-desc">' + t['desc'] + '</p>'
-            '<div class="tool-meta">' + ''.join('<span class="meta-chip">'+m+'</span>' for m in t['meta']) + '</div>'
-            '<h3>📋 主要功能</h3><ul>' + features_li + '</ul>'
-            '<h3>📖 教程资源</h3><div class="resource-links">' + resources + '</div>'
-            '<h3>💡 实战案例</h3><ul>' + cases_li + '</ul>'
-            '</div>'
+        def _case_item(c):
+            if isinstance(c, tuple):
+                return "<li><a href=\"" + c[1] + "\" target=\"_blank\" rel=\"noopener\" style=\"color:var(--accent)\">" + c[0] + " ↗</a></li>"
+            return "<li>" + c + "</li>"
+        cases_li = "".join(_case_item(c) for c in t["cases"])
+
+        tool_cards.append(
+            "<div class=\"article-card\" id=\"tool-" + tid + "\">"
+            "<div class=\"card-meta\">"
+            "<span class=\"card-status\" style=\"background:" + badge_bg + ";color:" + badge_fg + "\">" + t["badge"] + "</span>"
+            "<span class=\"card-tag\">" + t["meta"][0] + "</span>"
+            "</div>"
+            "<div class=\"card-title\" style=\"margin-top:.4rem\"><span style=\"font-size:1.2rem\">🔧</span> " + t["name"] + "</div>"
+            "<div class=\"card-summary\">" + t["desc"] + "</div>"
+            "<details style=\"margin-top:.5rem\">"
+            "<summary style=\"cursor:pointer;font-size:.8rem;color:var(--accent);font-weight:600\">📋 主要功能</summary>"
+            "<ul style=\"margin:.4rem 0 .6rem 1.2rem;font-size:.8rem;color:#5a6178;line-height:1.9\">" + features_li + "</ul>"
+            "</details>"
+            "<details style=\"margin-top:.3rem\">"
+            "<summary style=\"cursor:pointer;font-size:.8rem;color:var(--accent);font-weight:600\">📖 教程资源</summary>"
+            "<div class=\"resource-links\" style=\"margin-top:.4rem\">" + tutorials_links + "</div>"
+            "</details>"
+            "<details style=\"margin-top:.3rem\">"
+            "<summary style=\"cursor:pointer;font-size:.8rem;color:var(--accent);font-weight:600\">💡 实战案例</summary>"
+            "<ul style=\"margin:.4rem 0 0 1.2rem;font-size:.8rem;color:#5a6178;line-height:1.9\">" + cases_li + "</ul>"
+            "</details>"
+            "</div>"
         )
 
     body = (
-        '<div class="sec-header"><h1>🔧 工具软件</h1>'
-        '<p>覆盖 PBPK、PopPK、PK/PD 建模全流程的工具链。每款工具点击左侧目录查看详情、教程与实战案例。</p>'
-        '<p class="updated">⚠️ 软件选型应根据具体项目需求、机构许可和监管要求综合考量</p></div>'
-        '<div class="tree-layout">'
-        '<div class="tree-nav">'
-        '<div class="tree-nav-header">📂 工具分类</div>'
-        + '\n'.join(tree_items) +
-        '</div>'
-        '<div id="tool-detail-container" class="tool-panel">'
-        + '\n'.join(panels) +
-        '</div></div>'
+        "<div class=\"sec-header\"><h1>🔧 工具软件</h1>"
+        "<p>覆盖 PBPK、PopPK、PK/PD 建模全流程的工具链。点击下方卡片展开功能详情、教程资源与实战案例。</p>"
+        "<p class=\"updated\">⚠️ 软件选型应根据具体项目需求、机构许可和监管要求综合考量</p></div>"
+        "<div class=\"card-grid wide\">" + "".join(tool_cards) + "</div>"
     )
-    extra_js = '<script>initToolPage("' + (first_id or '') + '")</script>'
-    html = wrap(body, '/resources/tools.html', '工具软件', '定量药理工具软件全列表', extra_js)
-    with open(DST / 'resources' / 'tools.html', 'w', encoding='utf-8') as f:
+    html = wrap(body, "/resources/tools.html", "工具软件", "定量药理工具软件全列表")
+    (DST / "resources").mkdir(parents=True, exist_ok=True)
+    with open(DST / "resources" / "tools.html", "w", encoding="utf-8") as f:
         f.write(html)
-    print('  ✓ tools.html (new design)')
-
-# ── 学习资源页（标签切换） ──────────────────────────────
+    print("  ✓ tools.html (card layout)")
 def build_tutorials_page():
     tut_sections = [
         ("introduction", "入门教程", [
@@ -885,7 +890,7 @@ def build_tutorials_page():
                 "首个 PBPK 模型的构建（以乙醇为例）",
                 "推荐阅读：Jager et al. 2021, CPT",
             ], [
-                ("PBPK建模入门（中文）", "#"),
+                ("PBPK建模入门（中文·知乎专栏）", "https://zhuanlan.zhihu.com/p/139167755"),
                 ("Physiology-based pharmacokinetics - Wikipedia", "https://en.wikipedia.org/wiki/Physiology-based_pharmacokinetics"),
             ]),
             ("PopPK 入门：混合效应模型基础", "📊", [
@@ -896,7 +901,7 @@ def build_tutorials_page():
                 "推荐练习：丙泊酚 PopPK 数据集",
             ], [
                 ("NONMEM 入门指南", "https://iconpln.com/resources"),
-                ("PopPK 公开数据集", "#"),
+                ("PopPK 经典数据集 — Certara Vertex", "https://certara.boldeno.com/"),
             ]),
             ("PK/PD 建模入门：链接药物与效应", "💊", [
                 "直接效应模型与效应室模型",
@@ -916,7 +921,7 @@ def build_tutorials_page():
                 "多药物 DDI 的 PBPK 建模策略",
             ], [
                 ("FDA PBPK 指南（2024）", "https://www.fda.gov/"),
-                ("PBPK 模型验证清单", "#"),
+                ("FDA PBPK 模型验证指南（2024）", "https://www.fda.gov/media/132502/download"),
             ]),
             ("PopPK 进阶：模型优化与仿真", "📈", [
                 "协变量筛选：CAT vs VPC",
@@ -926,7 +931,7 @@ def build_tutorials_page():
                 "NCA 与 PopPK 的结合应用",
             ], [
                 ("PsN 教程", "https://psnplugin.sourceforge.net/"),
-                ("VPC 详解", "#"),
+                ("VPC（可视化预测检验）教程 — ICON", "https://www.iconplc.com/blog/visual-predictive-check"),
             ]),
             ("实时答疑：常见建模问题汇总", "❓", [
                 "收敛失败：参数边界与初始值",
@@ -934,7 +939,7 @@ def build_tutorials_page():
                 "异常观测值（outlier）的识别",
                 "模型不稳定：随机效应结构问题",
             ], [
-                ("NONMEM 错误代码速查", "#"),
+                ("NONMEM 错误代码手册 — ICON", "https://www.iconplc.com/solutions/software/nonmem/resources"),
             ]),
         ]),
         ("practice", "实战资源", [
@@ -946,7 +951,7 @@ def build_tutorials_page():
             ], [
                 ("Certara Model Repository", "https://www.certara.com/"),
                 ("Open Systems Pharmacology models", "https://www.open-systems-pharmacology.org/"),
-                ("GitHub: quantitative-pharma", "#"),
+                ("GitHub: 定量药理开源项目集", "https://github.com/topics/quantitative-pharmacology"),
             ]),
             ("认证课程与工作坊", "🎓", [
                 "Certara SimCYP 认证培训（线上/线下）",
@@ -984,7 +989,7 @@ def build_tutorials_page():
                 "定量药理在细胞与基因疗法中的应用前景",
                 "监管科学推动下的 MIDD 未来",
             ], [
-                ("MIDD 未来展望（NEJM 2024）", "#"),
+                ("MIDD 未来展望 — NEJM 2024", "https://www.nejm.org/doi/full/10.1056/NEJMp2404554"),
             ]),
         ]),
     ]
