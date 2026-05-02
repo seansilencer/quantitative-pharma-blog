@@ -33,8 +33,8 @@ jobs:
           git add -A
           git diff --cached --quiet || git commit -m "Weekly content update $(date +'%Y-%m-%d')"
 
-      - name: Build MkDocs site
-        run: mkdocs build
+      - name: Build static site
+        run: python3 build.py
 
       - name: Push built site to GitHub (触发 Vercel 部署)
         uses: ad-m/github-push-action@master

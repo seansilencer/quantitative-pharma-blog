@@ -100,13 +100,7 @@ GitHub 仓库页面 → Actions → "Build and Deploy to Vercel" → Run workflo
 
 ```bash
 # 安装依赖
-pip install -r requirements.txt
-
-# 本地开发服务器（热重载）
-mkdocs serve
-
-# 构建静态文件（不部署）
-mkdocs build --strict
+python3 build.py
 ```
 
 ---
