@@ -28,4 +28,4 @@
 - 剂量个体化（TDM 结合 PopPK）
 - 临床试验模拟
 
-[→ 查看全部 PopPK 文献](../articles/index.md)
+[→ 查看全部 PopPK 文献](/articles/index.html)

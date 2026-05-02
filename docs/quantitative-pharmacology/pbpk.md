@@ -29,4 +29,4 @@
 
 > 本节内容由 tools/update_blog.py 自动更新
 
-[→ 查看全部 PBPK 文献](../articles/index.md)
+[→ 查看全部 PBPK 文献](/articles/index.html)

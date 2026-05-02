@@ -25,4 +25,4 @@ $$E = E_0 + \frac{E_{max} \cdot C^γ}{EC_{50}^γ + C^γ}$$
 - **抗肿瘤**：AUC/IC50 与 ORR/DOR 关联建模
 - **免疫治疗**：暴露量-毒性/疗效关系
 
-[→ 查看全部 PK/PD 文献](../articles/index.md)
+[→ 查看全部 PK/PD 文献](/articles/index.html)

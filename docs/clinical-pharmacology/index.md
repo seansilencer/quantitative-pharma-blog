@@ -28,4 +28,4 @@
 - NMPA: 化学药物临床药代动力学研究技术指导原则
 - EMA: Guideline on the pharmacokinetic and clinical evaluation
 
-[→ 查看临床药理文献](../articles/index.md)
+[→ 查看临床药理文献](/articles/index.html)

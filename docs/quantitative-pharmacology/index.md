@@ -32,4 +32,4 @@
 
 ## 精选文章
 
-[→ 查看全部文章](../articles/index.md)
+[→ 查看全部文章](/articles/index.html)

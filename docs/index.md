@@ -49,7 +49,7 @@
 | PBPK modeling in pediatric drug development: regulatory perspectives | CPT | 2025-03 | PBPK |
 | Model-informed drug development: FDA update 2024 | FDA/NEJM | 2025-01 | Regulatory |
 
-[→ 查看全部文章](articles/index.md)
+[→ 查看全部文章](/articles/index.html)
 
 ---
 
