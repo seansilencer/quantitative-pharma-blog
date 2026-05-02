@@ -462,9 +462,12 @@ def main():
     n = 0
     for md_file in SRC.rglob('*.md'):
         rel = md_file.relative_to(SRC)
-        if rel.parts[0] in ('.', 'stylesheets') or rel.name == 'index.md':
+        # 跳过 stylesheets 目录和根目录的 index.md（首页已单独生成）
+        if rel.parts[0] in ('.', 'stylesheets'):
             continue
-        is_article = bool('articles/index' in str(rel))
+        if rel.name == 'index.md' and len(rel.parts) == 1:
+            continue
+        is_article = bool('articles' in str(rel) and rel.name == 'index.md')
         dst_file = DST / rel.with_suffix('.html')
         build_page(md_file, dst_file, is_article=is_article)
         n += 1
