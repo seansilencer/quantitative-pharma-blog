@@ -136,7 +136,27 @@ footer a{color:var(--accent)}
 
 JS = """
 function toggleNav(id){var el=document.getElementById('nav-'+id);if(el){el.style.display=el.style.display==='block'?'none':'block';var parent=document.getElementById('nav-item-'+id);if(parent)parent.classList.toggle('open')}}
-function setActive(path){document.querySelectorAll('.nav-link').forEach(function(el){el.classList.remove('active');if(el.getAttribute('href')===path){el.classList.add('active');var p=el.closest('.nav-children');if(p){p.style.display='block';var pi=p.previousElementSibling;if(pi)pi.classList.add('open')}}});var crumbs=document.getElementById('breadcrumb');if(crumbs){var parts=path.split('/').filter(Boolean);var html='<a href="index.html">首页</a>';var acc='';parts.forEach(function(p,i){acc+='/'+p;var label=document.querySelector('.nav-link[href="'+acc+'"]');if(label&&i<parts.length-1){html+=' > <a href="'+acc+'">'+label.textContent.trim()+'</a>'}});crumbs.innerHTML=html}}
+function setActive(path){
+  var normalizedPath = path.startsWith('/') ? path : '/' + path;
+  document.querySelectorAll('.nav-link').forEach(function(el){
+    el.classList.remove('active');
+    var href = el.getAttribute('href') || '';
+    var normalizedHref = href.startsWith('/') ? href : '/' + href;
+    if(normalizedHref === normalizedPath){el.classList.add('active');var p=el.closest('.nav-children');if(p){p.style.display='block';var pi=p.previousElementSibling;if(pi&&pi.classList.contains('nav-link'))pi.classList.add('open')}}
+  });
+  var crumbs=document.getElementById('breadcrumb');
+  if(crumbs){
+    var parts=path.split('/').filter(Boolean);
+    var html='<a href="/index.html">首页</a>';
+    var acc='';
+    for(var i=0;i<parts.length-1;i++){
+      acc+='/'+parts[i];
+      var label=document.querySelector('.nav-link[href="'+acc+'.html"],.nav-link[href="'+acc+'/index.html"]');
+      if(label){html+=' > <a href="'+acc+'/index.html">'+label.textContent.trim()+'</a>'}
+    }
+    crumbs.innerHTML=html;
+  }
+}
 """
 
 # ── Markdown → HTML ───────────────────────────────────────
@@ -263,13 +283,13 @@ def nav_html(current):
                 c_active = (current == child['file'])
                 c_cls = 'nav-link'
                 if c_active: c_cls += ' active'
-                lines.append('<a class="' + c_cls + '" href="' + child['file'] + '">'
+                lines.append('<a class="' + c_cls + '" href="/' + child['file'] + '">'
                              + child['label'] + '</a>')
             lines.append('</div></div>')
         else:
             cls = 'nav-link'
             if is_active: cls += ' active'
-            lines.append('<a class="' + cls + '" href="' + item['file'] + '">'
+            lines.append('<a class="' + cls + '" href="/' + item['file'] + '">'
                          + item['label'] + '</a>')
     lines.append('</div>')
     return '\n'.join(lines)
@@ -279,7 +299,7 @@ def wrap(content, current, title, desc):
     n = nav_html(current)
     bc = ''
     if current != 'index.html':
-        bc = '<a href="index.html">首页</a> &rsaquo; ' + title
+        bc = '<a href="/index.html">首页</a> &rsaquo; ' + title
     return (
         '<!DOCTYPE html>\n<html lang="zh-CN">\n<head>\n'
         '<meta charset="UTF-8">\n<meta name="viewport" content="width=device-width,initial-scale=1">\n'
@@ -429,9 +449,9 @@ def build_home():
         sc.append(
             '<div class="article-card">'
             '<div style="font-size:2rem;margin-bottom:.4rem">' + icon + '</div>'
-            '<div class="card-title"><a href="' + href + '">' + name + '</a></div>'
+            '<div class="card-title"><a href="/' + href + '">' + name + '</a></div>'
             '<div class="card-summary">' + d + '</div>'
-            '<div class="card-footer"><a class="card-link" href="' + href + '">进入 ›</a></div>'
+            '<div class="card-footer"><a class="card-link" href="/' + href + '">进入 ›</a></div>'
             '</div>'
         )
 

@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>临床药理 | 定量药理与临床药理前沿追踪</title>
+<meta name="description" content="研究药物在人体内的吸收、分布、代谢和排泄（ADME）规律，为新药研发和临床合理用药提供科学依据。">
+<style>
+:root{--bg:#f8f9fc;--sb:#1e2535;--sb-fg:#c8d0e0;--sb-active:#5c6bc0;
+      --accent:#5c6bc0;--acc-bg:#e8eaf6;--text:#1a1e2e;--muted:#6b7280;
+      --card:#fff;--border:#e2e8f0}
+*{box-sizing:border-box;margin:0;padding:0}
+body{display:flex;min-height:100vh;background:var(--bg);color:var(--text);
+     font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;line-height:1.6}
+a{color:var(--accent);text-decoration:none}
+a:hover{text-decoration:underline}
+
+/* ── 侧边栏 ── */
+#sidebar{width:260px;min-width:260px;background:var(--sb);color:var(--sb-fg);
+         position:fixed;top:0;left:0;height:100vh;overflow-y:auto;
+         display:flex;flex-direction:column}
+#sb-header{padding:1.2rem 1rem;border-bottom:1px solid rgba(255,255,255,.08);color:#fff;font-weight:700;font-size:.95rem;line-height:1.4}
+#sb-header span{font-size:.75rem;opacity:.55;font-weight:400;display:block;margin-top:.2rem}
+.nav-item{padding:0}
+.nav-link{display:flex;align-items:center;padding:.55rem 1rem;font-size:.9rem;
+          color:var(--sb-fg);cursor:pointer;transition:background .15s,color .15s;
+          text-decoration:none;user-select:none}
+.nav-link:hover{background:rgba(255,255,255,.07);color:#fff}
+.nav-link.active{background:var(--sb-active);color:#fff;font-weight:500}
+.nav-link .arrow{margin-left:auto;font-size:.7rem;transition:transform .2s}
+.nav-link.open .arrow{transform:rotate(90deg)}
+.nav-children{display:none;padding-left:.8rem}
+.nav-children .nav-link{padding:.4rem 1rem .4rem 1.8rem;font-size:.85rem}
+
+/* ── 主区 ── */
+#main{margin-left:260px;flex:1;display:flex;flex-direction:column;min-width:0}
+#topbar{background:#fff;border-bottom:1px solid var(--border);padding:.85rem 2rem;
+        display:flex;align-items:center;gap:1rem;position:sticky;top:0;z-index:10}
+#breadcrumb{font-size:.85rem;color:var(--muted)}
+#breadcrumb a{color:var(--accent)}
+#topbar-right{margin-left:auto;font-size:.82rem;color:var(--muted)}
+#content{padding:2rem 2.5rem;flex:1;max-width:1100px}
+footer{background:#fff;border-top:1px solid var(--border);padding:.8rem 2rem;
+       text-align:center;font-size:.8rem;color:var(--muted)}
+footer a{color:var(--accent)}
+
+/* ── 卡片网格 ── */
+.card-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:1rem;margin-top:1rem}
+.article-card{background:var(--card);border:1px solid var(--border);border-radius:10px;
+              padding:1.1rem 1.2rem;transition:box-shadow .2s,transform .2s;
+              display:flex;flex-direction:column;gap:.35rem}
+.article-card:hover{box-shadow:0 6px 20px rgba(92,107,192,.18);transform:translateY(-2px)}
+.card-meta{display:flex;gap:.5rem;align-items:center;flex-wrap:wrap}
+.card-status{padding:.1rem .45rem;border-radius:99px;font-size:.72rem;font-weight:600}
+.s-new{background:#e8f5e9;color:#2e7d32}
+.s-old{background:#e3f2fd;color:#1565c0}
+.s-classic{background:#f3e5f5;color:#6a1b9a}
+.card-source{font-size:.78rem;color:var(--muted)}
+.card-title{font-size:.98rem;font-weight:600;line-height:1.4}
+.card-title a{color:var(--text)}
+.article-card:hover .card-title a{color:var(--accent)}
+.card-summary{font-size:.83rem;color:#555;flex:1;line-height:1.55}
+.card-footer{margin-top:.35rem;display:flex;justify-content:space-between;align-items:center}
+.card-date{font-size:.78rem;color:var(--muted)}
+.card-link{font-size:.82rem;color:var(--accent);font-weight:500;white-space:nowrap}
+.card-link:hover{text-decoration:underline}
+
+/* ── 页面头部 ── */
+.sec-header{margin-bottom:1.5rem;padding-bottom:.8rem;border-bottom:2px solid var(--accent)}
+.sec-header h1{font-size:1.55rem}
+.sec-header p{color:var(--muted);margin-top:.3rem;font-size:.88rem}
+.sec-header .updated{font-size:.8rem;margin-top:.4rem}
+
+/* ── 正文排版 ── */
+.md-body h2{font-size:1.2rem;margin:1.6rem 0 .6rem;padding-bottom:.3rem;border-bottom:1px solid var(--border)}
+.md-body h3{font-size:1.02rem;margin:1.2rem 0 .4rem}
+.md-body p{margin:.5rem 0;line-height:1.75}
+.md-body ul,.md-body ol{margin:.5rem 0;padding-left:1.4rem}
+.md-body li{margin:.25rem 0}
+.md-body blockquote{margin:.8rem 0;padding:.6rem 1rem;border-left:3px solid var(--accent);background:var(--acc-bg);border-radius:0 6px 6px 0}
+.md-body table{width:100%;border-collapse:collapse;margin:.8rem 0;font-size:.88rem}
+.md-body th,.md-body td{padding:.5rem .75rem;border:1px solid var(--border);text-align:left}
+.md-body th{background:var(--accent);color:#fff;font-weight:500}
+.md-body tr:nth-child(even){background:rgba(0,0,0,.03)}
+.md-body code{background:#f0f0f0;padding:.1rem .35rem;border-radius:3px;font-size:.85em}
+.md-body pre{background:#f4f4f4;padding:.9rem;border-radius:6px;overflow-x:auto;margin:.8rem 0}
+.md-body pre code{background:none;padding:0}
+.md-body hr{border:none;border-top:1px solid var(--border);margin:1.5rem 0}
+.md-body strong{font-weight:600}
+
+/* ── 响应式 ── */
+@media(max-width:768px){
+  #sidebar{transform:translateX(-100%);z-index:100}
+  #sidebar.open{transform:translateX(0)}
+  #main{margin-left:0}
+  #sb-toggle{display:flex;align-items:center;justify-content:center;width:36px;height:36px;
+             background:#f0f0f0;border-radius:6px;border:none;cursor:pointer;font-size:1.2rem}
+  #content{padding:1.2rem}
+  .card-grid{grid-template-columns:1fr}
+}
+</style>
+</head>
+<body>
+<div id="sidebar">
+<div id="sb-header">定量药理与临床药理前沿追踪<span>定量药理 · 临床药理 · 前沿追踪</span></div>
+<div id="nav-tree">
+<a class="nav-link" href="/index.html">🏠 首页</a>
+<div class="nav-item" id="nav-item-qpm">
+<div class="nav-link" onclick="toggleNav('qpm')">📐 定量药理建模<span class="arrow">&#9658;</span></div>
+<div class="nav-children" id="nav-qpm" style="display:none">
+<a class="nav-link" href="/quantitative-pharmacology/pbpk.html">PBPK 建模</a>
+<a class="nav-link" href="/quantitative-pharmacology/poppk.html">PopPK 建模</a>
+<a class="nav-link" href="/quantitative-pharmacology/pkbd.html">PK/PD 关联</a>
+</div></div>
+<div class="nav-item" id="nav-item-cp">
+<div class="nav-link active" onclick="toggleNav('cp')">💊 临床药理<span class="arrow">&#9658;</span></div>
+<div class="nav-children" id="nav-cp" style="display:none">
+<a class="nav-link" href="/clinical-pharmacology/innovative-drugs.html">创新药临床药理</a>
+<a class="nav-link" href="/clinical-pharmacology/generic-drugs.html">仿制药 / BE</a>
+<a class="nav-link" href="/clinical-pharmacology/special-populations.html">特殊人群药理</a>
+</div></div>
+<a class="nav-link" href="/articles/index.html">📚 文章总目录</a>
+<a class="nav-link" href="/regulations/index.html">📋 法规与指南</a>
+<a class="nav-link" href="/conferences/index.html">🎓 会议与培训</a>
+<div class="nav-item" id="nav-item-experts">
+<div class="nav-link" onclick="toggleNav('experts')">👥 专家名录<span class="arrow">&#9658;</span></div>
+<div class="nav-children" id="nav-experts" style="display:none">
+<a class="nav-link" href="/experts/domestic.html">国内专家</a>
+<a class="nav-link" href="/experts/international.html">国际专家</a>
+</div></div>
+<div class="nav-item" id="nav-item-resources">
+<div class="nav-link" onclick="toggleNav('resources')">🔧 学术资源<span class="arrow">&#9658;</span></div>
+<div class="nav-children" id="nav-resources" style="display:none">
+<a class="nav-link" href="/resources/journals.html">期刊推荐</a>
+<a class="nav-link" href="/resources/tools.html">工具软件</a>
+</div></div>
+</div>
+</div>
+<div id="main">
+<div id="topbar">
+<button id="sb-toggle" onclick="document.getElementById('sidebar').classList.toggle('open')">&#9776;</button>
+<div id="breadcrumb"><a href="/index.html">首页</a> &rsaquo; 临床药理</div>
+<div id="topbar-right">更新: 2026-05-02</div>
+</div>
+<div id="content">
+<div class="sec-header"><h1>临床药理</h1><p>研究药物在人体内的吸收、分布、代谢和排泄（ADME）规律，为新药研发和临床合理用药提供科学依据。</p></div><div class="md-body"><h2>临床药理</h2>
+<blockquote>研究药物在人体内的吸收、分布、代谢和排泄（ADME）规律，为新药研发和临床合理用药提供科学依据。</blockquote>
+<h3>核心主题</h3>
+<h4>创新药临床药理</h4>
+<ul>
+<li>首次人体试验（FIH）剂量设计</li>
+<li>药代动力学/药效学（PK/PD）研究</li>
+<li>药物相互作用（DDI）评估</li>
+<li>特殊人群研究（肝/肾功能、儿科、老人）</li>
+</ul>
+<h4>仿制药/生物等效性</h4>
+<ul>
+<li>生物等效性（BE）研究设计与统计</li>
+<li>体内外相关性（IVIVC）</li>
+<li>溶出曲线方法学</li>
+<li>复杂制剂（缓释、透皮、吸入）的 BE 策略</li>
+</ul>
+<h4>特殊人群药理</h4>
+<ul>
+<li>**肝功能损害**：根据 Child-Pugh 分级调整剂量</li>
+<li>**肾功能损害**：基于 eGFR 的给药方案</li>
+<li>**儿科人群**：瀑布式开发与异速缩放</li>
+<li>**老年人**：衰老的 PK/PD 改变</li>
+</ul>
+<h3>监管指导原则</h3>
+<ul>
+<li>FDA: ICH E4, E7, E11, E18</li>
+<li>NMPA: 化学药物临床药代动力学研究技术指导原则</li>
+<li>EMA: Guideline on the pharmacokinetic and clinical evaluation</li>
+</ul>
+<p>[→ 查看临床药理文献](../articles/index.md)</p></div>
+</div>
+<footer>© 2025 定量药理与临床药理前沿追踪 · 内容版权归属原作者 · <a href="https://github.com/seansilencer/quantitative-pharma-blog">GitHub</a></footer>
+</div>
+<script>
+function toggleNav(id){var el=document.getElementById('nav-'+id);if(el){el.style.display=el.style.display==='block'?'none':'block';var parent=document.getElementById('nav-item-'+id);if(parent)parent.classList.toggle('open')}}
+function setActive(path){
+  var normalizedPath = path.startsWith('/') ? path : '/' + path;
+  document.querySelectorAll('.nav-link').forEach(function(el){
+    el.classList.remove('active');
+    var href = el.getAttribute('href') || '';
+    var normalizedHref = href.startsWith('/') ? href : '/' + href;
+    if(normalizedHref === normalizedPath){el.classList.add('active');var p=el.closest('.nav-children');if(p){p.style.display='block';var pi=p.previousElementSibling;if(pi&&pi.classList.contains('nav-link'))pi.classList.add('open')}}
+  });
+  var crumbs=document.getElementById('breadcrumb');
+  if(crumbs){
+    var parts=path.split('/').filter(Boolean);
+    var html='<a href="/index.html">首页</a>';
+    var acc='';
+    for(var i=0;i<parts.length-1;i++){
+      acc+='/'+parts[i];
+      var label=document.querySelector('.nav-link[href="'+acc+'.html"],.nav-link[href="'+acc+'/index.html"]');
+      if(label){html+=' > <a href="'+acc+'/index.html">'+label.textContent.trim()+'</a>'}
+    }
+    crumbs.innerHTML=html;
+  }
+}
+</script>
+<script>setActive("clinical-pharmacology/index.html")</script>
+</body>
+</html>

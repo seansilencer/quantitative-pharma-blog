@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>📚 文章总目录 | 定量药理与临床药理前沿追踪</title>
+<meta name="description" content="系统化分类整理的定量药理与临床药理文章库">
+<style>
+:root{--bg:#f8f9fc;--sb:#1e2535;--sb-fg:#c8d0e0;--sb-active:#5c6bc0;
+      --accent:#5c6bc0;--acc-bg:#e8eaf6;--text:#1a1e2e;--muted:#6b7280;
+      --card:#fff;--border:#e2e8f0}
+*{box-sizing:border-box;margin:0;padding:0}
+body{display:flex;min-height:100vh;background:var(--bg);color:var(--text);
+     font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;line-height:1.6}
+a{color:var(--accent);text-decoration:none}
+a:hover{text-decoration:underline}
+
+/* ── 侧边栏 ── */
+#sidebar{width:260px;min-width:260px;background:var(--sb);color:var(--sb-fg);
+         position:fixed;top:0;left:0;height:100vh;overflow-y:auto;
+         display:flex;flex-direction:column}
+#sb-header{padding:1.2rem 1rem;border-bottom:1px solid rgba(255,255,255,.08);color:#fff;font-weight:700;font-size:.95rem;line-height:1.4}
+#sb-header span{font-size:.75rem;opacity:.55;font-weight:400;display:block;margin-top:.2rem}
+.nav-item{padding:0}
+.nav-link{display:flex;align-items:center;padding:.55rem 1rem;font-size:.9rem;
+          color:var(--sb-fg);cursor:pointer;transition:background .15s,color .15s;
+          text-decoration:none;user-select:none}
+.nav-link:hover{background:rgba(255,255,255,.07);color:#fff}
+.nav-link.active{background:var(--sb-active);color:#fff;font-weight:500}
+.nav-link .arrow{margin-left:auto;font-size:.7rem;transition:transform .2s}
+.nav-link.open .arrow{transform:rotate(90deg)}
+.nav-children{display:none;padding-left:.8rem}
+.nav-children .nav-link{padding:.4rem 1rem .4rem 1.8rem;font-size:.85rem}
+
+/* ── 主区 ── */
+#main{margin-left:260px;flex:1;display:flex;flex-direction:column;min-width:0}
+#topbar{background:#fff;border-bottom:1px solid var(--border);padding:.85rem 2rem;
+        display:flex;align-items:center;gap:1rem;position:sticky;top:0;z-index:10}
+#breadcrumb{font-size:.85rem;color:var(--muted)}
+#breadcrumb a{color:var(--accent)}
+#topbar-right{margin-left:auto;font-size:.82rem;color:var(--muted)}
+#content{padding:2rem 2.5rem;flex:1;max-width:1100px}
+footer{background:#fff;border-top:1px solid var(--border);padding:.8rem 2rem;
+       text-align:center;font-size:.8rem;color:var(--muted)}
+footer a{color:var(--accent)}
+
+/* ── 卡片网格 ── */
+.card-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:1rem;margin-top:1rem}
+.article-card{background:var(--card);border:1px solid var(--border);border-radius:10px;
+              padding:1.1rem 1.2rem;transition:box-shadow .2s,transform .2s;
+              display:flex;flex-direction:column;gap:.35rem}
+.article-card:hover{box-shadow:0 6px 20px rgba(92,107,192,.18);transform:translateY(-2px)}
+.card-meta{display:flex;gap:.5rem;align-items:center;flex-wrap:wrap}
+.card-status{padding:.1rem .45rem;border-radius:99px;font-size:.72rem;font-weight:600}
+.s-new{background:#e8f5e9;color:#2e7d32}
+.s-old{background:#e3f2fd;color:#1565c0}
+.s-classic{background:#f3e5f5;color:#6a1b9a}
+.card-source{font-size:.78rem;color:var(--muted)}
+.card-title{font-size:.98rem;font-weight:600;line-height:1.4}
+.card-title a{color:var(--text)}
+.article-card:hover .card-title a{color:var(--accent)}
+.card-summary{font-size:.83rem;color:#555;flex:1;line-height:1.55}
+.card-footer{margin-top:.35rem;display:flex;justify-content:space-between;align-items:center}
+.card-date{font-size:.78rem;color:var(--muted)}
+.card-link{font-size:.82rem;color:var(--accent);font-weight:500;white-space:nowrap}
+.card-link:hover{text-decoration:underline}
+
+/* ── 页面头部 ── */
+.sec-header{margin-bottom:1.5rem;padding-bottom:.8rem;border-bottom:2px solid var(--accent)}
+.sec-header h1{font-size:1.55rem}
+.sec-header p{color:var(--muted);margin-top:.3rem;font-size:.88rem}
+.sec-header .updated{font-size:.8rem;margin-top:.4rem}
+
+/* ── 正文排版 ── */
+.md-body h2{font-size:1.2rem;margin:1.6rem 0 .6rem;padding-bottom:.3rem;border-bottom:1px solid var(--border)}
+.md-body h3{font-size:1.02rem;margin:1.2rem 0 .4rem}
+.md-body p{margin:.5rem 0;line-height:1.75}
+.md-body ul,.md-body ol{margin:.5rem 0;padding-left:1.4rem}
+.md-body li{margin:.25rem 0}
+.md-body blockquote{margin:.8rem 0;padding:.6rem 1rem;border-left:3px solid var(--accent);background:var(--acc-bg);border-radius:0 6px 6px 0}
+.md-body table{width:100%;border-collapse:collapse;margin:.8rem 0;font-size:.88rem}
+.md-body th,.md-body td{padding:.5rem .75rem;border:1px solid var(--border);text-align:left}
+.md-body th{background:var(--accent);color:#fff;font-weight:500}
+.md-body tr:nth-child(even){background:rgba(0,0,0,.03)}
+.md-body code{background:#f0f0f0;padding:.1rem .35rem;border-radius:3px;font-size:.85em}
+.md-body pre{background:#f4f4f4;padding:.9rem;border-radius:6px;overflow-x:auto;margin:.8rem 0}
+.md-body pre code{background:none;padding:0}
+.md-body hr{border:none;border-top:1px solid var(--border);margin:1.5rem 0}
+.md-body strong{font-weight:600}
+
+/* ── 响应式 ── */
+@media(max-width:768px){
+  #sidebar{transform:translateX(-100%);z-index:100}
+  #sidebar.open{transform:translateX(0)}
+  #main{margin-left:0}
+  #sb-toggle{display:flex;align-items:center;justify-content:center;width:36px;height:36px;
+             background:#f0f0f0;border-radius:6px;border:none;cursor:pointer;font-size:1.2rem}
+  #content{padding:1.2rem}
+  .card-grid{grid-template-columns:1fr}
+}
+</style>
+</head>
+<body>
+<div id="sidebar">
+<div id="sb-header">定量药理与临床药理前沿追踪<span>定量药理 · 临床药理 · 前沿追踪</span></div>
+<div id="nav-tree">
+<a class="nav-link" href="/index.html">🏠 首页</a>
+<div class="nav-item" id="nav-item-qpm">
+<div class="nav-link" onclick="toggleNav('qpm')">📐 定量药理建模<span class="arrow">&#9658;</span></div>
+<div class="nav-children" id="nav-qpm" style="display:none">
+<a class="nav-link" href="/quantitative-pharmacology/pbpk.html">PBPK 建模</a>
+<a class="nav-link" href="/quantitative-pharmacology/poppk.html">PopPK 建模</a>
+<a class="nav-link" href="/quantitative-pharmacology/pkbd.html">PK/PD 关联</a>
+</div></div>
+<div class="nav-item" id="nav-item-cp">
+<div class="nav-link" onclick="toggleNav('cp')">💊 临床药理<span class="arrow">&#9658;</span></div>
+<div class="nav-children" id="nav-cp" style="display:none">
+<a class="nav-link" href="/clinical-pharmacology/innovative-drugs.html">创新药临床药理</a>
+<a class="nav-link" href="/clinical-pharmacology/generic-drugs.html">仿制药 / BE</a>
+<a class="nav-link" href="/clinical-pharmacology/special-populations.html">特殊人群药理</a>
+</div></div>
+<a class="nav-link active" href="/articles/index.html">📚 文章总目录</a>
+<a class="nav-link" href="/regulations/index.html">📋 法规与指南</a>
+<a class="nav-link" href="/conferences/index.html">🎓 会议与培训</a>
+<div class="nav-item" id="nav-item-experts">
+<div class="nav-link" onclick="toggleNav('experts')">👥 专家名录<span class="arrow">&#9658;</span></div>
+<div class="nav-children" id="nav-experts" style="display:none">
+<a class="nav-link" href="/experts/domestic.html">国内专家</a>
+<a class="nav-link" href="/experts/international.html">国际专家</a>
+</div></div>
+<div class="nav-item" id="nav-item-resources">
+<div class="nav-link" onclick="toggleNav('resources')">🔧 学术资源<span class="arrow">&#9658;</span></div>
+<div class="nav-children" id="nav-resources" style="display:none">
+<a class="nav-link" href="/resources/journals.html">期刊推荐</a>
+<a class="nav-link" href="/resources/tools.html">工具软件</a>
+</div></div>
+</div>
+</div>
+<div id="main">
+<div id="topbar">
+<button id="sb-toggle" onclick="document.getElementById('sidebar').classList.toggle('open')">&#9776;</button>
+<div id="breadcrumb"><a href="/index.html">首页</a> &rsaquo; 📚 文章总目录</div>
+<div id="topbar-right">更新: 2026-05-02</div>
+</div>
+<div id="content">
+<div class="sec-header"><h1>📚 文章总目录</h1><p>系统化分类整理的定量药理与临床药理文章库</p><p class="updated">🆕本周新增 · ✅近期收录 · 🔒历史经典 — 点击卡片访问原文</p></div><div class="card-grid"><div class="article-card"><div class="card-meta"><span class="card-status s-new">新增</span><span class="card-source">药学学报 / 王等</span></div><div class="card-title"><a href="#">PBPK建模在儿科药物开发中的应用进展</a></div><div class="card-summary">系统综述PBPK模型在儿科剂量推导中的最新应用，包括年龄分层生理学参数、模型验证方法及监管要求</div><div class="card-footer"><span class="card-date">2025-04</span><a class="card-link" href="#">阅读 &#8594;</a></div></div>
+<div class="article-card"><div class="card-meta"><span class="card-status s-new">新增</span><span class="card-source">中国临床药理学杂志 / 李等</span></div><div class="card-title"><a href="#">基于PBPK模型预测华法林种族差异研究</a></div><div class="card-summary">利用PBPK模型定量评估华法林在中国人群与高加索人群间的PK差异及其机制</div><div class="card-footer"><span class="card-date">2025-03</span><a class="card-link" href="#">阅读 &#8594;</a></div></div>
+<div class="article-card"><div class="card-meta"><span class="card-status s-new">新增</span><span class="card-source">CPT (Clin Pharmacol Ther) / Miller et al.</span></div><div class="card-title"><a href="#">PBPK modeling in pediatric drug development: regulatory perspectives</a></div><div class="card-summary">FDA视角综述PBPK模型在儿科药物开发中的监管要求与审评考量</div><div class="card-footer"><span class="card-date">2025-03</span><a class="card-link" href="#">阅读 &#8594;</a></div></div>
+<div class="article-card"><div class="card-meta"><span class="card-status s-old">收录</span><span class="card-source">CPT / Zhang et al.</span></div><div class="card-title"><a href="#">Physiologically-based pharmacokinetic modeling in drug-drug interaction studies</a></div><div class="card-summary">综合评述PBPK模型在DDI研究中的应用、验证标准及案例分析</div><div class="card-footer"><span class="card-date">2024-11</span><a class="card-link" href="#">阅读 &#8594;</a></div></div>
+<div class="article-card"><div class="card-meta"><span class="card-status s-old">收录</span><span class="card-source">中国新药杂志 / 陈等</span></div><div class="card-title"><a href="#">器官衰变患者的PBPK建模：方法学进展</a></div><div class="card-summary">综述终末期肾病患者及肝硬化患者的PBPK模型构建要点</div><div class="card-footer"><span class="card-date">2024-10</span><a class="card-link" href="#">阅读 &#8594;</a></div></div>
+<div class="article-card"><div class="card-meta"><span class="card-status s-old">收录</span><span class="card-source">中国临床药理学杂志 / 赵等</span></div><div class="card-title"><a href="#">PBPK模型在一致性评价中的应用：实例解析</a></div><div class="card-summary">以质子泵抑制剂为例，展示PBPK模型在仿制药生物等效性预测中的应用</div><div class="card-footer"><span class="card-date">2024-08</span><a class="card-link" href="#">阅读 &#8594;</a></div></div>
+<div class="article-card"><div class="card-meta"><span class="card-status s-classic">经典</span><span class="card-source">药学进展 / 周等</span></div><div class="card-title"><a href="#">GastroPlus在创新药研发中的应用实操</a></div><div class="card-summary">GastroPlus软件操作教程及在吸收建模中的实战案例</div><div class="card-footer"><span class="card-date">2024-06</span><a class="card-link" href="#">阅读 &#8594;</a></div></div>
+<div class="article-card"><div class="card-meta"><span class="card-status s-classic">经典</span><span class="card-source">来源/作者</span></div><div class="card-title"><a href="#">标题</a></div><div class="card-summary">摘要</div><div class="card-footer"><span class="card-date">日期</span><a class="card-link" href="#">阅读 &#8594;</a></div></div>
+<div class="article-card"><div class="card-meta"><span class="card-status s-new">新增</span><span class="card-source">中国新药杂志 / 孙等</span></div><div class="card-title"><a href="#">群体药代动力学模型在仿制药等效性评价中的应用</a></div><div class="card-summary">综述PopPK在仿制药BE评价中的应用场景、统计分析方法及监管考量</div><div class="card-footer"><span class="card-date">2025-03</span><a class="card-link" href="#">阅读 &#8594;</a></div></div>
+<div class="article-card"><div class="card-meta"><span class="card-status s-new">新增</span><span class="card-source">中国临床药理学杂志</span></div><div class="card-title"><a href="#">非小细胞肺癌患者中奥希替尼PopPK模型构建与验证</a></div><div class="card-summary">建立中国NSCLC患者的奥希替尼PopPK模型，考察协变量对暴露量的影响</div><div class="card-footer"><span class="card-date">2025-02</span><a class="card-link" href="#">阅读 &#8594;</a></div></div>
+<div class="article-card"><div class="card-meta"><span class="card-status s-old">收录</span><span class="card-source">CPT-PSP / Wang et al.</span></div><div class="card-title"><a href="#">Model-based meta-analysis in oncology drug development</a></div><div class="card-summary">利用荟萃分析方法综合评价PD-1/PD-L1抑制剂的疗效预测因素</div><div class="card-footer"><span class="card-date">2024-12</span><a class="card-link" href="#">阅读 &#8594;</a></div></div>
+<div class="article-card"><div class="card-meta"><span class="card-status s-old">收录</span><span class="card-source">药学学报 / 刘等</span></div><div class="card-title"><a href="#">儿科群体药代动力学：挑战与策略</a></div><div class="card-summary">综述儿童群体药代动力学研究的特殊挑战，包括数据稀疏性、发育差异等</div><div class="card-footer"><span class="card-date">2024-09</span><a class="card-link" href="#">阅读 &#8594;</a></div></div>
+<div class="article-card"><div class="card-meta"><span class="card-status s-old">收录</span><span class="card-source">中国临床药理学杂志</span></div><div class="card-title"><a href="#">NONMEM在复杂PopPK模型中的应用进阶</a></div><div class="card-summary">从实例出发讲解NONMEM编码技巧，包括间接响应模型、时间依赖性参数等</div><div class="card-footer"><span class="card-date">2024-07</span><a class="card-link" href="#">阅读 &#8594;</a></div></div>
+<div class="article-card"><div class="card-meta"><span class="card-status s-classic">经典</span><span class="card-source">定量药理公众号</span></div><div class="card-title"><a href="#">PopPK建模实战：数据处理、模型构建与评价</a></div><div class="card-summary">完整展示一个PopPK建模项目的全流程，含数据清洗、模型代码、结果解读</div><div class="card-footer"><span class="card-date">2024-05</span><a class="card-link" href="#">阅读 &#8594;</a></div></div>
+<div class="article-card"><div class="card-meta"><span class="card-status s-classic">经典</span><span class="card-source">来源/作者</span></div><div class="card-title"><a href="#">标题</a></div><div class="card-summary">摘要</div><div class="card-footer"><span class="card-date">日期</span><a class="card-link" href="#">阅读 &#8594;</a></div></div>
+<div class="article-card"><div class="card-meta"><span class="card-status s-classic">经典</span><span class="card-source">中国临床药理学杂志</span></div><div class="card-title"><a href="#">定量药理在抗肿瘤创新药首次人体试验中的应用</a></div><div class="card-summary">综述FIH研究中如何利用定量药理方法优化起始剂量选择、剂量递增策略</div><div class="card-footer"><span class="card-date">2025-04</span><a class="card-link" href="#">阅读 &#8594;</a></div></div>
+<div class="article-card"><div class="card-meta"><span class="card-status s-new">新增</span><span class="card-source">中国新药杂志 / Huang et al.</span></div><div class="card-title"><a href="#">靶点介导药物处置的PK/PD建模：理论与实践</a></div><div class="card-summary">系统阐述TMDD模型的建立、简化方法及在单克隆抗体药物中的应用</div><div class="card-footer"><span class="card-date">2025-02</span><a class="card-link" href="#">阅读 &#8594;</a></div></div>
+<div class="article-card"><div class="card-meta"><span class="card-status s-old">收录</span><span class="card-source">CPT / Liu et al.</span></div><div class="card-title"><a href="#">暴露量-疗效关联模型在降糖药物开发中的应用</a></div><div class="card-summary">基于GLP-1受体激动剂的PK/PD数据，建立E-R关系模型支持给药方案优化</div><div class="card-footer"><span class="card-date">2024-10</span><a class="card-link" href="#">阅读 &#8594;</a></div></div>
+<div class="article-card"><div class="card-meta"><span class="card-status s-old">收录</span><span class="card-source">中国临床药理学杂志</span></div><div class="card-title"><a href="#">定量药理在支持抗肿瘤药物联合用药剂量优化中的应用</a></div><div class="card-summary">综述抗肿瘤联合治疗中定量药理模型如何指导临床给药方案设计</div><div class="card-footer"><span class="card-date">2024-08</span><a class="card-link" href="#">阅读 &#8594;</a></div></div>
+<div class="article-card"><div class="card-meta"><span class="card-status s-classic">经典</span><span class="card-source">统计软件公众号</span></div><div class="card-title"><a href="#">PK/PD建模中的统计分析方法：SAS与R实现</a></div><div class="card-summary">详细介绍PK/PD建模中的统计方法，包括非线性混合效应模型、NCA等</div><div class="card-footer"><span class="card-date">2024-04</span><a class="card-link" href="#">阅读 &#8594;</a></div></div>
+<div class="article-card"><div class="card-meta"><span class="card-status s-classic">经典</span><span class="card-source">来源/作者</span></div><div class="card-title"><a href="#">标题</a></div><div class="card-summary">摘要</div><div class="card-footer"><span class="card-date">日期</span><a class="card-link" href="#">阅读 &#8594;</a></div></div>
+<div class="article-card"><div class="card-meta"><span class="card-status s-old">收录</span><span class="card-source">临床肿瘤学杂志</span></div><div class="card-title"><a href="#">定量药理支持抗肿瘤药物剂量优化的方法学综述</a></div><div class="card-summary">系统梳理支持抗肿瘤药物剂量优化的定量药理方法，包括MTD、RP2D等</div><div class="card-footer"><span class="card-date">2024-11</span><a class="card-link" href="#">阅读 &#8594;</a></div></div>
+<div class="article-card"><div class="card-meta"><span class="card-status s-old">收录</span><span class="card-source">NEJM / Madabushi et al.</span></div><div class="card-title"><a href="#">Model-Informed Drug Development: FDA Update 2024</a></div><div class="card-summary">FDA定量药理团队综述MIDD在2024年的进展及2025年工作重点</div><div class="card-footer"><span class="card-date">2025-01</span><a class="card-link" href="#">阅读 &#8594;</a></div></div>
+<div class="article-card"><div class="card-meta"><span class="card-status s-classic">经典</span><span class="card-source">药学论坛公众号</span></div><div class="card-title"><a href="#">从临床需求出发的定量药理研究设计</a></div><div class="card-summary">以实例说明如何从临床问题出发设计定量药理研究</div><div class="card-footer"><span class="card-date">2024-03</span><a class="card-link" href="#">阅读 &#8594;</a></div></div>
+<div class="article-card"><div class="card-meta"><span class="card-status s-classic">经典</span><span class="card-source">来源/作者</span></div><div class="card-title"><a href="#">标题</a></div><div class="card-summary">摘要</div><div class="card-footer"><span class="card-date">日期</span><a class="card-link" href="#">阅读 &#8594;</a></div></div>
+<div class="article-card"><div class="card-meta"><span class="card-status s-new">新增</span><span class="card-source">中国临床药理学杂志</span></div><div class="card-title"><a href="#">创新药首次人体试验中的临床药理研究设计</a></div><div class="card-summary">综述FIH试验中临床药理研究的关键要素：剂量递增、SAD/MAD设计</div><div class="card-footer"><span class="card-date">2025-04</span><a class="card-link" href="#">阅读 &#8594;</a></div></div>
+<div class="article-card"><div class="card-meta"><span class="card-status s-new">新增</span><span class="card-source">中国新药杂志</span></div><div class="card-title"><a href="#">免疫治疗药物的临床药理特点与研究策略</a></div><div class="card-summary">探讨PD-1/PD-L1、ADC等新型免疫治疗药物的临床药理研究要点</div><div class="card-footer"><span class="card-date">2025-03</span><a class="card-link" href="#">阅读 &#8594;</a></div></div>
+<div class="article-card"><div class="card-meta"><span class="card-status s-old">收录</span><span class="card-source">NMPA指导原则解读</span></div><div class="card-title"><a href="#">核药（非放射性）的临床药理研究技术要求</a></div><div class="card-summary">结合NMPA指导原则，分析放射性治疗药物的临床药理研究特殊要求</div><div class="card-footer"><span class="card-date">2024-12</span><a class="card-link" href="#">阅读 &#8594;</a></div></div>
+<div class="article-card"><div class="card-meta"><span class="card-status s-old">收录</span><span class="card-source">中国临床药理学杂志</span></div><div class="card-title"><a href="#">药物相互作用研究在创新药开发中的策略</a></div><div class="card-summary">系统综述DDI研究的时机选择、体内体外方法学及基于PBPK的预测</div><div class="card-footer"><span class="card-date">2024-09</span><a class="card-link" href="#">阅读 &#8594;</a></div></div>
+<div class="article-card"><div class="card-meta"><span class="card-status s-classic">经典</span><span class="card-source">医药研发公众号</span></div><div class="card-title"><a href="#">FDA在肿瘤领域对定量药理的审评要求</a></div><div class="card-summary">解读FDA对肿瘤新药申报中定量药理资料的具体要求</div><div class="card-footer"><span class="card-date">2024-06</span><a class="card-link" href="#">阅读 &#8594;</a></div></div>
+<div class="article-card"><div class="card-meta"><span class="card-status s-classic">经典</span><span class="card-source">来源/作者</span></div><div class="card-title"><a href="#">标题</a></div><div class="card-summary">摘要</div><div class="card-footer"><span class="card-date">日期</span><a class="card-link" href="#">阅读 &#8594;</a></div></div>
+<div class="article-card"><div class="card-meta"><span class="card-status s-old">收录</span><span class="card-source">中国临床药理学杂志</span></div><div class="card-title"><a href="#">高变异药物BE评价的统计方法进展</a></div><div class="card-summary">综述RSABE、RSABE+中参等统计方法在高变异药物BE评价中的应用</div><div class="card-footer"><span class="card-date">2024-11</span><a class="card-link" href="#">阅读 &#8594;</a></div></div>
+<div class="article-card"><div class="card-meta"><span class="card-status s-old">收录</span><span class="card-source">中国新药杂志</span></div><div class="card-title"><a href="#">窄治疗指数药物BE评价的挑战与策略</a></div><div class="card-summary">分析NTID类药物BE评价的特殊要求、评价标准及案例</div><div class="card-footer"><span class="card-date">2024-09</span><a class="card-link" href="#">阅读 &#8594;</a></div></div>
+<div class="article-card"><div class="card-meta"><span class="card-status s-classic">经典</span><span class="card-source">仿制药研发公众号</span></div><div class="card-title"><a href="#">FDA个药指导原则的解读与研发策略</a></div><div class="card-summary">分类整理FDA各治疗领域个药BE指导原则及研发策略建议</div><div class="card-footer"><span class="card-date">2024-05</span><a class="card-link" href="#">阅读 &#8594;</a></div></div>
+<div class="article-card"><div class="card-meta"><span class="card-status s-classic">经典</span><span class="card-source">临床试验公众号</span></div><div class="card-title"><a href="#">BE试验设计与统计分析的常见问题</a></div><div class="card-summary">列举BE试验中的常见设计缺陷与统计问题，提供避坑指南</div><div class="card-footer"><span class="card-date">2024-03</span><a class="card-link" href="#">阅读 &#8594;</a></div></div>
+<div class="article-card"><div class="card-meta"><span class="card-status s-classic">经典</span><span class="card-source">来源/作者</span></div><div class="card-title"><a href="#">标题</a></div><div class="card-summary">摘要</div><div class="card-footer"><span class="card-date">日期</span><a class="card-link" href="#">阅读 &#8594;</a></div></div>
+<div class="article-card"><div class="card-meta"><span class="card-status s-old">收录</span><span class="card-source">中国临床药理学杂志</span></div><div class="card-title"><a href="#">肝功能损害患者的药代动力学变化与剂量调整</a></div><div class="card-summary">综述不同 Child-Pugh 分级对药物PK的影响及剂量调整原则</div><div class="card-footer"><span class="card-date">2024-10</span><a class="card-link" href="#">阅读 &#8594;</a></div></div>
+<div class="article-card"><div class="card-meta"><span class="card-status s-old">收录</span><span class="card-source">CPT / Mol Pharm</span></div><div class="card-title"><a href="#">肾功能损害患者的定量药理研究方法</a></div><div class="card-summary">介绍利用PopPK/PBPK模型预测肾损患者药代变化的方法</div><div class="card-footer"><span class="card-date">2024-08</span><a class="card-link" href="#">阅读 &#8594;</a></div></div>
+<div class="article-card"><div class="card-meta"><span class="card-status s-old">收录</span><span class="card-source">药学学报</span></div><div class="card-title"><a href="#">儿科药代动力学的发育药理考量</a></div><div class="card-summary">综述儿童发育对药物吸收、分布、代谢、排泄的影响机制</div><div class="card-footer"><span class="card-date">2024-07</span><a class="card-link" href="#">阅读 &#8594;</a></div></div>
+<div class="article-card"><div class="card-meta"><span class="card-status s-classic">经典</span><span class="card-source">老年医学公众号</span></div><div class="card-title"><a href="#">老年人群的定量药理研究策略</a></div><div class="card-summary">针对老年人生理特点讨论定量药理研究的设计考量</div><div class="card-footer"><span class="card-date">2024-04</span><a class="card-link" href="#">阅读 &#8594;</a></div></div>
+<div class="article-card"><div class="card-meta"><span class="card-status s-classic">经典</span><span class="card-source">来源</span></div><div class="card-title"><a href="#">标题</a></div><div class="card-summary">摘要</div><div class="card-footer"><span class="card-date">日期</span><a class="card-link" href="#">阅读 &#8594;</a></div></div>
+<div class="article-card"><div class="card-meta"><span class="card-status s-new">新增</span><span class="card-source">NMPA</span></div><div class="card-title"><a href="#">NMPA关于公开征求《定量药理研究技术指导原则》意见的通知</a></div><div class="card-summary">国内首个专门针对定量药理研究的指导原则草案，征求意见中</div><div class="card-footer"><span class="card-date">2025-04</span><a class="card-link" href="#">阅读 &#8594;</a></div></div>
+<div class="article-card"><div class="card-meta"><span class="card-status s-new">新增</span><span class="card-source">FDA</span></div><div class="card-title"><a href="#">FDA Guidance on Population Pharmacokinetics (2024 Final)</a></div><div class="card-summary">FDA更新的PopPK技术指导原则，修订了模型评价标准</div><div class="card-footer"><span class="card-date">2024-12</span><a class="card-link" href="#">阅读 &#8594;</a></div></div>
+<div class="article-card"><div class="card-meta"><span class="card-status s-classic">经典</span><span class="card-source">EMA</span></div><div class="card-title"><a href="#">EMA关于PBPK模型在DDI研究中的使用指南</a></div><div class="card-summary">EMA发布PBPK模型用于DDI预测的详细技术要求</div><div class="card-footer"><span class="card-date">2025-02</span><a class="card-link" href="#">阅读 &#8594;</a></div></div>
+<div class="article-card"><div class="card-meta"><span class="card-status s-old">收录</span><span class="card-source">NMPA</span></div><div class="card-title"><a href="#">NMPA《创新药临床药理学研究技术指导原则》(2024版)</a></div><div class="card-summary">全面更新创新药临床药理研究要求，新增定量药理相关要求</div><div class="card-footer"><span class="card-date">2024-06</span><a class="card-link" href="#">阅读 &#8594;</a></div></div>
+<div class="article-card"><div class="card-meta"><span class="card-status s-old">收录</span><span class="card-source">FDA</span></div><div class="card-title"><a href="#">FDA Model-Informed Drug Development Pilot Program Update</a></div><div class="card-summary">FDA MIDD试点项目进展报告，含多个真实案例</div><div class="card-footer"><span class="card-date">2024-08</span><a class="card-link" href="#">阅读 &#8594;</a></div></div>
+<div class="article-card"><div class="card-meta"><span class="card-status s-classic">经典</span><span class="card-source">ICH/翻译</span></div><div class="card-title"><a href="#">ICH E11(R2)在儿科药物开发中的应用解读</a></div><div class="card-summary">ICH儿科研究指导原则的中文解读及实施要点</div><div class="card-footer"><span class="card-date">2024-03</span><a class="card-link" href="#">阅读 &#8594;</a></div></div>
+<div class="article-card"><div class="card-meta"><span class="card-status s-classic">经典</span><span class="card-source">主要内容</span></div><div class="card-title"><a href="#">时间</a></div><div class="card-summary"></div><div class="card-footer"><span class="card-date"></span><a class="card-link" href="#">阅读 &#8594;</a></div></div>
+<div class="article-card"><div class="card-meta"><span class="card-status s-classic">经典</span><span class="card-source">临床药理研究进展、定量药理专题会场</span></div><div class="card-title"><a href="#">每年10月</a></div><div class="card-summary"></div><div class="card-footer"><span class="card-date"></span><a class="card-link" href="#">阅读 &#8594;</a></div></div>
+<div class="article-card"><div class="card-meta"><span class="card-status s-classic">经典</span><span class="card-source">PBPK/PopPK/PKPD建模技术交流</span></div><div class="card-title"><a href="#">每年7月</a></div><div class="card-summary"></div><div class="card-footer"><span class="card-date"></span><a class="card-link" href="#">阅读 &#8594;</a></div></div>
+<div class="article-card"><div class="card-meta"><span class="card-status s-classic">经典</span><span class="card-source">药物研发全链条，设有定量药理分会场</span></div><div class="card-title"><a href="#">每年5月</a></div><div class="card-summary"></div><div class="card-footer"><span class="card-date"></span><a class="card-link" href="#">阅读 &#8594;</a></div></div>
+<div class="article-card"><div class="card-meta"><span class="card-status s-classic">经典</span><span class="card-source">AI+药物建模、临床试验模拟</span></div><div class="card-title"><a href="#">每年9月</a></div><div class="card-summary"></div><div class="card-footer"><span class="card-date"></span><a class="card-link" href="#">阅读 &#8594;</a></div></div>
+<div class="article-card"><div class="card-meta"><span class="card-status s-classic">经典</span><span class="card-source">主要内容</span></div><div class="card-title"><a href="#">时间</a></div><div class="card-summary"></div><div class="card-footer"><span class="card-date"></span><a class="card-link" href="#">阅读 &#8594;</a></div></div>
+<div class="article-card"><div class="card-meta"><span class="card-status s-classic">经典</span><span class="card-source">临床药理与定量药理领域顶级会议</span></div><div class="card-title"><a href="#">每年3月</a></div><div class="card-summary"></div><div class="card-footer"><span class="card-date"></span><a class="card-link" href="#">阅读 &#8594;</a></div></div>
+<div class="article-card"><div class="card-meta"><span class="card-status s-classic">经典</span><span class="card-source">临床药理教育与研究进展</span></div><div class="card-title"><a href="#">每年10月</a></div><div class="card-summary"></div><div class="card-footer"><span class="card-date"></span><a class="card-link" href="#">阅读 &#8594;</a></div></div>
+<div class="article-card"><div class="card-meta"><span class="card-status s-classic">经典</span><span class="card-source">PopPK/PD建模方法学专题</span></div><div class="card-title"><a href="#">每年6月</a></div><div class="card-summary"></div><div class="card-footer"><span class="card-date"></span><a class="card-link" href="#">阅读 &#8594;</a></div></div>
+<div class="article-card"><div class="card-meta"><span class="card-status s-classic">经典</span><span class="card-source">定量药理建模与仿真</span></div><div class="card-title"><a href="#">每年10月</a></div><div class="card-summary"></div><div class="card-footer"><span class="card-date"></span><a class="card-link" href="#">阅读 &#8594;</a></div></div>
+<div class="article-card"><div class="card-meta"><span class="card-status s-classic">经典</span><span class="card-source">领域</span></div><div class="card-title"><a href="#">IF</a></div><div class="card-summary"></div><div class="card-footer"><span class="card-date"></span><a class="card-link" href="#">阅读 &#8594;</a></div></div>
+<div class="article-card"><div class="card-meta"><span class="card-status s-classic">经典</span><span class="card-source">临床药理旗舰期刊</span></div><div class="card-title"><a href="#">~7</a></div><div class="card-summary"></div><div class="card-footer"><span class="card-date"></span><a class="card-link" href="#">阅读 &#8594;</a></div></div>
+<div class="article-card"><div class="card-meta"><span class="card-status s-classic">经典</span><span class="card-source">定量药理专刊</span></div><div class="card-title"><a href="#">~4</a></div><div class="card-summary"></div><div class="card-footer"><span class="card-date"></span><a class="card-link" href="#">阅读 &#8594;</a></div></div>
+<div class="article-card"><div class="card-meta"><span class="card-status s-classic">经典</span><span class="card-source">临床药理</span></div><div class="card-title"><a href="#">~3</a></div><div class="card-summary"></div><div class="card-footer"><span class="card-date"></span><a class="card-link" href="#">阅读 &#8594;</a></div></div>
+<div class="article-card"><div class="card-meta"><span class="card-status s-classic">经典</span><span class="card-source">临床药代动力学</span></div><div class="card-title"><a href="#">~5</a></div><div class="card-summary"></div><div class="card-footer"><span class="card-date"></span><a class="card-link" href="#">阅读 &#8594;</a></div></div>
+<div class="article-card"><div class="card-meta"><span class="card-status s-classic">经典</span><span class="card-source">基础与临床药理</span></div><div class="card-title"><a href="#">~4</a></div><div class="card-summary"></div><div class="card-footer"><span class="card-date"></span><a class="card-link" href="#">阅读 &#8594;</a></div></div>
+<div class="article-card"><div class="card-meta"><span class="card-status s-classic">经典</span><span class="card-source">药物代谢与处置</span></div><div class="card-title"><a href="#">~3</a></div><div class="card-summary"></div><div class="card-footer"><span class="card-date"></span><a class="card-link" href="#">阅读 &#8594;</a></div></div>
+<div class="article-card"><div class="card-meta"><span class="card-status s-classic">经典</span><span class="card-source">国内药学顶刊</span></div><div class="card-title"><a href="#">中文核心</a></div><div class="card-summary"></div><div class="card-footer"><span class="card-date"></span><a class="card-link" href="#">阅读 &#8594;</a></div></div>
+<div class="article-card"><div class="card-meta"><span class="card-status s-classic">经典</span><span class="card-source">国内临床药理</span></div><div class="card-title"><a href="#">中文核心</a></div><div class="card-summary"></div><div class="card-footer"><span class="card-date"></span><a class="card-link" href="#">阅读 &#8594;</a></div></div></div>
+</div>
+<footer>© 2025 定量药理与临床药理前沿追踪 · 内容版权归属原作者 · <a href="https://github.com/seansilencer/quantitative-pharma-blog">GitHub</a></footer>
+</div>
+<script>
+function toggleNav(id){var el=document.getElementById('nav-'+id);if(el){el.style.display=el.style.display==='block'?'none':'block';var parent=document.getElementById('nav-item-'+id);if(parent)parent.classList.toggle('open')}}
+function setActive(path){
+  var normalizedPath = path.startsWith('/') ? path : '/' + path;
+  document.querySelectorAll('.nav-link').forEach(function(el){
+    el.classList.remove('active');
+    var href = el.getAttribute('href') || '';
+    var normalizedHref = href.startsWith('/') ? href : '/' + href;
+    if(normalizedHref === normalizedPath){el.classList.add('active');var p=el.closest('.nav-children');if(p){p.style.display='block';var pi=p.previousElementSibling;if(pi&&pi.classList.contains('nav-link'))pi.classList.add('open')}}
+  });
+  var crumbs=document.getElementById('breadcrumb');
+  if(crumbs){
+    var parts=path.split('/').filter(Boolean);
+    var html='<a href="/index.html">首页</a>';
+    var acc='';
+    for(var i=0;i<parts.length-1;i++){
+      acc+='/'+parts[i];
+      var label=document.querySelector('.nav-link[href="'+acc+'.html"],.nav-link[href="'+acc+'/index.html"]');
+      if(label){html+=' > <a href="'+acc+'/index.html">'+label.textContent.trim()+'</a>'}
+    }
+    crumbs.innerHTML=html;
+  }
+}
+</script>
+<script>setActive("articles/index.html")</script>
+</body>
+</html>
