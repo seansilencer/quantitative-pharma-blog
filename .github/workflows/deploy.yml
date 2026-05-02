@@ -1,0 +1,58 @@
+name: Build and Deploy to Vercel
+
+# 仅手动触发 + 每周五定时，避免递归
+on:
+  schedule:
+    - cron: '0 1 * * 5'  # 每周五凌晨1点（北京时间9点）
+  workflow_dispatch:
+  push:
+    branches: [deploy-branch]  # 推送到独立分支，不触发自己
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Install dependencies
+        run: pip install -r requirements.txt
+
+      - name: Update blog content
+        run: |
+          python3 tools/update_blog.py --generate || true
+          git config user.email "action@github.com"
+          git config user.name "GitHub Action"
+
+      - name: Build MkDocs site
+        run: mkdocs build --strict
+
+      - name: Commit site files
+        run: |
+          git add -A
+          git diff --cached --quiet || git commit -m "Build site $(date +'%Y-%m-%d %H:%M')"
+
+      - name: Push to GitHub (触发 Vercel 部署)
+        uses: ad-m/github-push-action@master
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          force: true
+          branch: master  # 推送到 master，触发 Vercel GitHub App 部署
+
+      - name: Send WeChat notification
+        if: always()
+        env:
+          WECOM_WEBHOOK_URL: ${{ secrets.WECOM_WEBHOOK_URL }}
+        run: |
+          if [ -n "$WECOM_WEBHOOK_URL" ]; then
+            python3 tools/wechat_notify.py
+          fi

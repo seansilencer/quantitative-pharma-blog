@@ -1,166 +1,127 @@
 # 🚀 部署指南
 
-## 方案一: Vercel 一键部署（推荐，5分钟完成）
+> 本博客使用 **MkDocs** + **Material for MkDocs** 构建，Vercel 自动构建并托管。
 
-### 步骤
+---
 
-**1. 推送代码到 GitHub**
-```bash
-# 创建GitHub仓库（需要先安装gh CLI或手动在GitHub网页创建）
-gh auth login
-gh repo create quantitative-pharma-blog --public --push
-# 或手动在 https://github.com/new 创建空仓库后:
-git remote add origin https://github.com/你的用户名/quantitative-pharma-blog.git
-git push -u origin master
+## 目录结构
+
+```
+quantitative-pharma-blog/
+├── docs/                      # 所有内容（MkDocs 源文件）
+│   ├── index.md               # 首页
+│   ├── quantitative-pharmacology/   # 定量药理建模
+│   ├── clinical-pharmacology/        # 临床药理
+│   ├── regulations/           # 法规指南
+│   ├── conferences/            # 会议培训
+│   ├── experts/               # 专家名录
+│   ├── resources/             # 学术资源
+│   └── stylesheets/extra.css  # 自定义样式
+├── mkdocs.yml                 # MkDocs 配置文件
+├── vercel.json               # Vercel 构建配置
+├── requirements.txt          # Python 依赖
+├── .github/workflows/
+│   └── deploy.yml             # 自动构建部署
+└── tools/
+    ├── update_blog.py         # 内容更新脚本
+    └── wechat_notify.py       # 微信推送
 ```
 
-**2. 导入 Vercel**
-1. 访问 https://vercel.com 并登录（可用GitHub账号）
-2. 点击 "Add New..." → "Project"
-3. 选择 "Import Git Repository"
-4. 选择 `quantitative-pharma-blog` 仓库
-5. Framework Preset 选择 "Other"
-6. 点击 "Deploy"
+---
 
-**3. 访问你的 Blog**
-- 部署完成后 Vercel 会给你一个 `xxx.vercel.app` 的域名
-- 在 Project Settings → Domains 可绑定自定义域名
+## 已完成自动部署 ✅
+
+Vercel 已连接 GitHub，每次推送到 `master` 分支会自动：
+1. 安装 `requirements.txt` 中的依赖
+2. 运行 `mkdocs build` 生成静态网站
+3. 将 `site/` 目录部署到 `xxx.vercel.app`
+
+**你的博客地址**：https://seansilencer-quantitative-pharma-bl.vercel.app/
 
 ---
 
-## 方案二: GitHub Pages + Cloudflare 加速（完全免费）
+## 绑定自定义域名（可选）
 
-### 步骤
-
-**1. 启用 GitHub Pages**
-1. 在 GitHub 仓库页面 → Settings → Pages
-2. Source 选择 "Deploy from a branch"
-3. Branch 选择 `master` `/ (root)`
-4. 点击 Save
-
-**2. 设置自定义域名（可选）**
-- 在 Custom domain 输入你的域名
-- 选择 "Enforce HTTPS"
-
-**3. 用 Cloudflare 加速（可选）**
-1. 注册 https://dash.cloudflare.com
-2. 添加你的域名
-3. 更新域名 NS 服务器为 Cloudflare 提供的地址
-4. 在 DNS 设置中，添加一条 CNAME 记录指向你的GitHub Pages地址
+1. Vercel Dashboard → 项目 → Settings → Domains
+2. 输入你的域名（如 `blog.example.com`）
+3. 按提示在 DNS 中添加记录
 
 ---
 
-## 配置微信推送通知
+## 手动编辑内容
 
-编辑 `tools/wechat_notify.py` 文件，填入你的推送渠道信息：
+所有博客内容都在 `docs/` 目录下，用 Markdown 编写。
 
-### 方式1: 企业微信群机器人（推荐，无需注册）
+### 快速添加新文章
 
-1. 打开企业微信电脑客户端
-2. 创建一个群（或用现有群）
-3. 群设置 → 群机器人 → 添加机器人
-4. 复制 Webhook URL
-5. 填入配置：
+编辑 `docs/articles/index.md`，在表格中添加行：
+
+```markdown
+| 文章标题 | 来源 | 日期 | 分类 |
+| 新研究进展 | 期刊名 | 2025-05 | PBPK |
+```
+
+### 添加新分类
+
+在 `docs/` 下创建子目录和 `index.md` 文件，然后更新 `mkdocs.yml` 的 `nav:` 部分。
+
+---
+
+## 微信推送通知
+
+编辑 `tools/wechat_notify.py`：
+
 ```python
-WECOM_WEBHOOK_URL = "https://qyapi.weixin.qq.com/cgi-bin/webhook/send?key=你的key"
+# 方式1：企业微信群机器人
+WECOM_WEBHOOK_URL = "https://qyapi.weixin.qq.com/cgi-bin/webhook/send?key=YOUR_KEY"
 ACTIVE_PROVIDER = "wecom"
-```
 
-### 方式2: Server酱（需要注册）
-
-1. 访问 https://sct.ft07.com 并扫码登录
-2. 复制你的 SCKEY
-3. 填入配置：
-```python
-SERVERCHAN_SCKEY = "你的SCKEY"
+# 方式2：Server酱
+SERVERCHAN_SCKEY = "YOUR_SCKEY"
 ACTIVE_PROVIDER = "serverchan"
 ```
 
-### 方式3: PushPlus（需要注册）
+---
 
-1. 访问 https://www.pushplus.plus 并扫码登录
-2. 复制你的 Token
-3. 填入配置：
-```python
-PUSHPLUS_TOKEN = "你的Token"
-ACTIVE_PROVIDER = "pushplus"
-```
+## GitHub Actions 自动构建
+
+`.github/workflows/deploy.yml` 已在每次 push 时自动：
+1. 运行 `tools/update_blog.py --generate` 更新内容
+2. 执行 `mkdocs build --strict` 生成 HTML
+3. 推送构建产物并触发 Vercel 部署
+
+### 手动触发构建
+
+GitHub 仓库页面 → Actions → "Build and Deploy to Vercel" → Run workflow
 
 ---
 
-## 设置自动更新和推送
-
-### 方式A: 本地 cronjob（需要电脑长期开机）
+## 本地预览
 
 ```bash
-# 编辑 crontab
-crontab -e
+# 安装依赖
+pip install -r requirements.txt
 
-# 添加以下行（每周五上午9点更新并推送）
-0 9 * * 5 cd /home/xiaoyu/quantitative-pharma-blog && python3 tools/update_blog.py && python3 tools/wechat_notify.py
+# 本地开发服务器（热重载）
+mkdocs serve
+
+# 构建静态文件（不部署）
+mkdocs build --strict
 ```
-
-### 方式B: GitHub Actions 自动部署和推送（推荐）
-
-在仓库中创建 `.github/workflows/deploy.yml`:
-
-```yaml
-name: Weekly Update and Deploy
-
-on:
-  schedule:
-    - cron: '0 1 * * 5'  # 每周五凌晨1点（北京时间9点）
-  workflow_dispatch:  # 手动触发
-
-jobs:
-  update-and-deploy:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-      
-      - name: Setup Python
-        uses: actions/setup-python@v5
-        with:
-          python-version: '3.10'
-      
-      - name: Update Blog
-        run: |
-          python3 tools/update_blog.py --generate
-          git config user.email "action@github.com"
-          git config user.name "GitHub Action"
-          git add -A && git commit -m "Weekly update $(date +'%Y-%m-%d')" || echo "No changes"
-      
-      - name: Push updates
-        run: git push
-      
-      - name: Send WeChat notification
-        env:
-          WECOM_WEBHOOK_URL: ${{ secrets.WECOM_WEBHOOK_URL }}
-        run: python3 tools/wechat_notify.py
-```
-
-然后在 GitHub 仓库 Settings → Secrets 中添加 `WECOM_WEBHOOK_URL`。
 
 ---
 
-## 快速检查清单
+## 常见问题
 
-- [ ] GitHub 仓库已创建并推送代码
-- [ ] Vercel 部署成功，域名可访问
-- [ ] 微信推送配置完成（已测试收到通知）
-- [ ] 自动更新 cronjob / GitHub Actions 已设置
+**Q: 部署后显示 404？**
+A: 检查 `vercel.json` 是否存在且 `buildCommand` 为 `mkdocs build`，`outputDirectory` 为 `site`。
+
+**Q: 样式丢失？**
+A: 确认 `docs/stylesheets/extra.css` 存在且 `mkdocs.yml` 中有 `extra_css` 配置。
+
+**Q: 微信推送失败？**
+A: 确认 `wechat_notify.py` 中 `ACTIVE_PROVIDER` 与配置匹配，且 Webhook 地址正确。
 
 ---
 
-## 手动部署命令
-
-```bash
-# 1. 更新内容后提交
-git add -A && git commit -m "Update: 2025-05-XX" && git push
-
-# 2. 测试微信推送
-python3 tools/wechat_notify.py
-
-# 3. 查看更新状态
-python3 tools/update_blog.py --status
-```
+*最后更新: 2025-05-02*

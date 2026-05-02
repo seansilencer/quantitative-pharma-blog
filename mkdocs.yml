@@ -1,0 +1,103 @@
+site_name: 定量药理与临床药理前沿追踪
+site_description: 关注国内外临床药理、定量药理领域的最新研究进展、专家观点与行业动态
+site_author: Sean Silencer
+
+# Vercel 部署需要使用 strict 模式
+strict: true
+
+# 主题配置
+theme:
+  name: material
+  language: zh
+  palette:
+    - scheme: default
+      primary: indigo
+      accent: blue
+      toggle:
+        icon: material/brightness-7
+        name: 切换到深色模式
+    - scheme: slate
+      primary: indigo
+      accent: blue
+      toggle:
+        icon: material/brightness-4
+        name: 切换到浅色模式
+  features:
+    - navigation.instant
+    - navigation.tracking
+    - navigation.sections
+    - navigation.expand
+    - toc.integrate
+    - search.suggest
+    - search.highlight
+    - content.code.copy
+    - content.code.annotate
+  icon:
+    repo: fontawesome/brands/github
+
+# 内容目录
+docs_dir: docs
+
+# 输出目录（Vercel 会用到）
+site_dir: site
+
+# 导航结构
+nav:
+  - 首页: index.md
+  - 定量药理建模:
+      - 简介: quantitative-pharmacology/index.md
+      - PBPK建模: quantitative-pharmacology/pbpk.md
+      - PopPK建模: quantitative-pharmacology/poppk.md
+      - PK/PD关联: quantitative-pharmacology/pkbd.md
+  - 临床药理:
+      - 简介: clinical-pharmacology/index.md
+      - 创新药临床药理: clinical-pharmacology/innovative-drugs.md
+      - 仿制药/BE: clinical-pharmacology/generic-drugs.md
+      - 特殊人群药理: clinical-pharmacology/special-populations.md
+  - 法规与指南: regulations/index.md
+  - 会议与培训: conferences/index.md
+  - 专家名录:
+      - 国内专家: experts/domestic.md
+      - 国际专家: experts/international.md
+  - 学术资源:
+      - 期刊推荐: resources/journals.md
+      - 工具软件: resources/tools.md
+
+# Markdown 扩展
+markdown_extensions:
+  - pymdownx.highlight:
+      anchor_linenums: true
+      line_spans: __span
+      pylangs: python, yaml, bash
+  - pymdownx.inlinehilite
+  - pymdownx.snippets
+  - pymdownx.superfences
+  - admonition
+  - pymdownx.details
+  - pymdownx.mark
+  - attr_list
+  - md_in_html
+  - tables
+  - toc:
+      permalink: true
+      toc_depth: 3
+
+# 搜索配置
+plugins:
+  - search:
+      lang:
+        - en
+        - zh
+      prebuild_index: true
+
+# 额外 CSS
+extra_css:
+  - stylesheets/extra.css
+
+# 仓库链接
+repo_name: seansilencer/quantitative-pharma-blog
+repo_url: https://github.com/seansilencer/quantitative-pharma-blog
+edit_uri: edit/main/docs/
+
+# 版权
+copyright: © 2025 定量药理与临床药理前沿追踪 · 内容版权归属原作者

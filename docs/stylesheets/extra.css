@@ -1,0 +1,33 @@
+/* 自定义样式 — 定量药理与临床药理前沿追踪 */
+
+:root {
+  --md-primary-fg-color: #5c6bc0;
+  --md-primary-fg-color--light: #7986cb;
+}
+
+/* 表格样式优化 */
+.md-typeset table {
+  font-size: 0.75rem;
+}
+
+/* 代码块样式 */
+.md-typeset code {
+  border-radius: 4px;
+}
+
+/* 导航栏标题 */
+.md-header__title {
+  font-weight: 600;
+}
+
+/* 首页英雄区域 */
+.md-content__inner > p:first-child {
+  font-size: 1.1em;
+  line-height: 1.6;
+}
+
+/* 引用块样式 */
+.md-typeset blockquote {
+  border-left: 4px solid var(--md-primary-fg-color);
+  background: rgba(92, 107, 192, 0.05);
+}

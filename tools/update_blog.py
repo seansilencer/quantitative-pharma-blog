@@ -11,11 +11,12 @@ from datetime import datetime, timedelta
 from pathlib import Path
 
 BLOG_DIR = Path(__file__).parent.parent
+DOCS_DIR = BLOG_DIR / "docs"
 DATA_DIR = BLOG_DIR / "data"
-ARTICLES_FILE = BLOG_DIR / "articles" / "index.md"
-EXPERTS_DOMESTIC = BLOG_DIR / "experts" / "domestic.md"
-EXPERTS_INTL = BLOG_DIR / "experts" / "international.md"
-INDEX_FILE = BLOG_DIR / "index.md"
+ARTICLES_FILE = DOCS_DIR / "articles" / "index.md"
+EXPERTS_DOMESTIC = DOCS_DIR / "experts" / "domestic.md"
+EXPERTS_INTL = DOCS_DIR / "experts" / "international.md"
+INDEX_FILE = DOCS_DIR / "index.md"
 UPDATE_LOG = BLOG_DIR / "logs" / "update_log.json"
 
 # 追踪来源
