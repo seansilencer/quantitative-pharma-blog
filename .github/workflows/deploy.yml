@@ -1,12 +1,10 @@
 name: Build and Deploy to Vercel
 
-# 仅手动触发 + 每周五定时，避免递归
+# 仅手动触发（避免递归）。自动更新由 blog-update.yml 处理。
 on:
+  workflow_dispatch:
   schedule:
     - cron: '0 1 * * 5'  # 每周五凌晨1点（北京时间9点）
-  workflow_dispatch:
-  push:
-    branches: [deploy-branch]  # 推送到独立分支，不触发自己
 
 jobs:
   build-and-deploy:
@@ -32,27 +30,16 @@ jobs:
           python3 tools/update_blog.py --generate || true
           git config user.email "action@github.com"
           git config user.name "GitHub Action"
+          git add -A
+          git diff --cached --quiet || git commit -m "Weekly content update $(date +'%Y-%m-%d')"
 
       - name: Build MkDocs site
         run: mkdocs build --strict
 
-      - name: Commit site files
-        run: |
-          git add -A
-          git diff --cached --quiet || git commit -m "Build site $(date +'%Y-%m-%d %H:%M')"
-
-      - name: Push to GitHub (触发 Vercel 部署)
+      - name: Push built site to GitHub (触发 Vercel 部署)
         uses: ad-m/github-push-action@master
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           force: true
-          branch: master  # 推送到 master，触发 Vercel GitHub App 部署
-
-      - name: Send WeChat notification
-        if: always()
-        env:
-          WECOM_WEBHOOK_URL: ${{ secrets.WECOM_WEBHOOK_URL }}
-        run: |
-          if [ -n "$WECOM_WEBHOOK_URL" ]; then
-            python3 tools/wechat_notify.py
-          fi
+          branch: master
+          # only: site/  # 可选：只推送 site/ 目录
