@@ -632,12 +632,12 @@ def build_home():
     sections = [
         ("📐","定量药理建模","PBPK · PopPK · PK/PD 建模","/quantitative-pharmacology/index.html"),
         ("💊","临床药理","创新药 · 仿制药 · 特殊人群","/clinical-pharmacology/index.html"),
-        ("📚","文章总目录","同行评审 · 公众号解读 · 会议报告","/articles/index.html"),
         ("📋","法规与指南","NMPA · FDA · EMA 指导原则","/regulations/index.html"),
         ("🎓","会议与培训","国内外学术会议与培训资源","/conferences/index.html"),
+        ("📚","期刊推荐","国际顶刊 · 定量药理专刊 · 中文核心","/resources/journals.html"),
+        ("🔧","工具软件","PBPK · PopPK · PK/PD 建模工具","/resources/tools.html"),
         ("📖","学习资源","入门 · 进阶 · 实战 · 专家分享","/tutorials/index.html"),
         ("👥","专家名录","国内 · 国际专家动态","/experts/index.html"),
-        ("🔧","学术资源","期刊推荐 · 工具软件","/resources/index.html"),
     ]
 
     sc = []
