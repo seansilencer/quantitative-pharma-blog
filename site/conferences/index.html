@@ -6,96 +6,232 @@
 <title>🎓 会议与培训 | 定量药理与临床药理前沿追踪</title>
 <meta name="description" content="">
 <style>
-:root{--bg:#f4f6fb;--sb:#1a1f2e;--sb-fg:#a8b3cf;--sb-active:#5c6bc0;
-      --accent:#5c6bc0;--acc-bg:#e8eaf6;--text:#1a1e2e;--muted:#6b7280;
-      --card:#fff;--border:#e2e8f0;--card-shadow:0 2px 8px rgba(92,107,192,.1)}
+:root{
+  --bg:#f8f9fc;--sb:#13182a;--sb-fg:#9aa3b8;--sb-hover:#1e2540;
+  --sb-active:#5c6bc0;--accent:#5c6bc0;--accent2:#7986cb;
+  --acc-bg:#eef0fb;--text:#1a1e2e;--muted:#8892a4;
+  --card:#fff;--border:#e4e8f0;--card2:#f0f2f8;
+  --shadow:0 2px 12px rgba(92,107,192,.12);
+  --shadow-hover:0 8px 30px rgba(92,107,192,.22);
+  --radius:14px;--radius-sm:8px;
+}
 *{box-sizing:border-box;margin:0;padding:0}
 body{display:flex;min-height:100vh;background:var(--bg);color:var(--text);
-     font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;line-height:1.6}
+     font-family:"PingFang SC","Microsoft YaHei",-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+     line-height:1.7}
 a{color:var(--accent);text-decoration:none}
 a:hover{text-decoration:underline}
 
 /* ── 侧边栏 ── */
-#sidebar{width:270px;min-width:270px;background:var(--sb);color:var(--sb-fg);
-         position:fixed;top:0;left:0;height:100vh;overflow-y:auto;
-         display:flex;flex-direction:column}
-#sb-header{padding:1.2rem 1rem 1rem;border-bottom:1px solid rgba(255,255,255,.07);
-           color:#fff;font-weight:700;font-size:.95rem;line-height:1.4}
-#sb-header span{font-size:.72rem;opacity:.45;font-weight:400;display:block;margin-top:.25rem}
-#nav-tree{padding:.5rem 0 2rem}
-.nav-item{padding:0}
-.nav-link{display:flex;align-items:center;padding:.55rem 1rem;font-size:.88rem;
-          color:var(--sb-fg);cursor:pointer;transition:background .15s,color .15s;
-          text-decoration:none;user-select:none}
-.nav-link:hover{background:rgba(255,255,255,.06);color:#fff}
-.nav-link.active{background:var(--sb-active);color:#fff;font-weight:500}
-.nav-link .arrow{margin-left:auto;font-size:.65rem;transition:transform .2s;color:#566480}
+#sidebar{width:268px;min-width:268px;background:var(--sb);color:var(--sb-fg);
+        position:fixed;top:0;left:0;height:100vh;overflow-y:auto;
+        display:flex;flex-direction:column;
+        scrollbar-width:thin;scrollbar-color:#2a3050 #13182a}
+#sidebar::-webkit-scrollbar{width:4px}
+#sidebar::-webkit-scrollbar-thumb{background:#2a3050;border-radius:2px}
+#sb-header{padding:1.4rem 1.2rem 1.1rem;
+           border-bottom:1px solid rgba(255,255,255,.06);
+           color:#fff;font-weight:700;font-size:.88rem;line-height:1.5;
+           background:linear-gradient(135deg,#1a2050 0%,#13182a 100%)}
+#sb-header span{font-size:.7rem;opacity:.4;font-weight:400;display:block;margin-top:.2rem;
+                 letter-spacing:.5px}
+#nav-tree{padding:.6rem 0 2rem}
+
+/* 搜索框 */
+#sb-search{margin:.8rem .8rem .4rem;position:relative}
+#sb-search input{width:100%;padding:.5rem .75rem .5rem 2rem;background:#1e2540;border:1px solid #2a3050;
+                 border-radius:var(--radius-sm);color:#fff;font-size:.8rem;outline:none;
+                 transition:border .2s,box-shadow .2s}
+#sb-search input:focus{border-color:var(--accent);box-shadow:0 0 0 3px rgba(92,107,192,.2)}
+#sb-search::before{content:"🔍";position:absolute;left:.55rem;top:50%;transform:translateY(-50%);
+                   font-size:.7rem;opacity:.5}
+
+/* 一级导航项 */
+.nav-item{padding:0;position:relative}
+.nav-link{display:flex;align-items:center;padding:.52rem 1rem;font-size:.85rem;
+          color:var(--sb-fg);cursor:pointer;transition:background .15s,color .15s,padding-left .15s;
+          text-decoration:none;user-select:none;border-left:3px solid transparent}
+.nav-link:hover{background:var(--sb-hover);color:#c8d0e8;padding-left:1.15rem}
+.nav-link.active{background:rgba(92,107,192,.18);color:#fff;border-left-color:var(--accent);font-weight:600}
+.nav-link .arrow{margin-left:auto;font-size:.6rem;transition:transform .25s;color:#4a5580}
 .nav-link.open .arrow{transform:rotate(90deg)}
-.nav-children{display:none;padding-left:.6rem}
-.nav-children .nav-link{padding:.38rem 1rem .38rem 2rem;font-size:.82rem}
+.nav-children{display:none;padding-left:.5rem}
+.nav-children .nav-link{padding:.32rem 1rem .32rem 2rem;font-size:.8rem}
+
+/* 子导航展开动效 */
+.nav-children.open{display:block;animation:slideDown .2s ease}
+@keyframes slideDown{from{opacity:0;transform:translateY(-6px)}to{opacity:1;transform:none}}
 
 /* ── 主区 ── */
-#main{margin-left:270px;flex:1;display:flex;flex-direction:column;min-width:0}
-#topbar{background:#fff;border-bottom:1px solid var(--border);padding:.75rem 2rem;
+#main{margin-left:268px;flex:1;display:flex;flex-direction:column;min-width:0}
+#topbar{background:rgba(255,255,255,.92);backdrop-filter:blur(12px);
+        border-bottom:1px solid var(--border);padding:.7rem 2rem;
         display:flex;align-items:center;gap:1rem;position:sticky;top:0;z-index:10}
-#topbar .sec-title{flex:1;font-size:.9rem;font-weight:600;color:var(--text)}
-#breadcrumb{font-size:.82rem;color:var(--muted)}
+#topbar .sec-title{flex:1;font-size:.88rem;font-weight:600;color:var(--text)}
+#breadcrumb{font-size:.8rem;color:var(--muted)}
 #breadcrumb a{color:var(--accent)}
-#topbar-right{margin-left:auto;font-size:.78rem;color:var(--muted)}
-#content{padding:2rem 2.5rem 4rem}
-footer{background:#fff;border-top:1px solid var(--border);padding:.8rem 2rem;
+#breadcrumb span{margin:0 .3rem;opacity:.4}
+#topbar-right{margin-left:auto;font-size:.76rem;color:var(--muted);display:flex;align-items:center;gap:.4rem}
+#topbar-right::before{content:"●";color:#4caf50;font-size:.5rem}
+#content{padding:2.2rem 2.8rem 5rem}
+footer{background:#fff;border-top:1px solid var(--border);padding:.9rem 2rem;
        text-align:center;font-size:.78rem;color:var(--muted)}
 footer a{color:var(--accent)}
 
 /* ── 卡片网格 ── */
-.card-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:1rem;margin-top:1rem}
-.article-card{background:var(--card);border:1px solid var(--border);border-radius:12px;
-              padding:1.1rem 1.2rem;transition:box-shadow .2s,transform .2s;
-              display:flex;flex-direction:column;gap:.4rem;cursor:pointer}
-.article-card:hover{box-shadow:0 6px 20px rgba(92,107,192,.15);transform:translateY(-2px)}
-.card-meta{display:flex;gap:.4rem;align-items:center;flex-wrap:wrap}
-.card-status{padding:.1rem .5rem;border-radius:99px;font-size:.7rem;font-weight:600}
-.s-new{background:#e8f5e9;color:#2e7d32}
-.s-old{background:#e3f2fd;color:#1565c0}
-.s-classic{background:#f3e5f5;color:#6a1b9a}
-.card-source{font-size:.76rem;color:var(--muted)}
-.card-title{font-size:.95rem;font-weight:600;line-height:1.4}
+.card-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(290px,1fr));gap:1.1rem;margin-top:1rem}
+.card-grid.wide{grid-template-columns:repeat(auto-fill,minmax(340px,1fr))}
+
+/* 主导航大卡片 */
+.hero-card{background:var(--card);border:1px solid var(--border);border-radius:var(--radius);
+          padding:1.4rem 1.5rem;display:flex;flex-direction:column;gap:.5rem;
+          transition:box-shadow .25s,transform .25s,border-color .25s;cursor:pointer;
+          position:relative;overflow:hidden}
+.hero-card::before{content:"";position:absolute;top:0;left:0;right:0;height:3px;
+                   background:linear-gradient(90deg,var(--accent),var(--accent2));
+                   opacity:0;transition:opacity .25s}
+.hero-card:hover{box-shadow:var(--shadow-hover);transform:translateY(-3px);border-color:var(--accent)}
+.hero-card:hover::before{opacity:1}
+.hero-card .card-icon{font-size:2.2rem;line-height:1;margin-bottom:.2rem}
+.hero-card .card-title{font-size:1rem;font-weight:700;color:var(--text);line-height:1.4}
+.hero-card .card-sub{font-size:.8rem;color:var(--muted);flex:1;line-height:1.6}
+.hero-card .card-footer{display:flex;justify-content:flex-end}
+.hero-card .card-arrow{color:var(--accent);font-size:.85rem;font-weight:600;opacity:0;
+                        transition:opacity .2s,transform .2s}
+.hero-card:hover .card-arrow{opacity:1;transform:translateX(4px)}
+
+/* 文章卡片 */
+.article-card{background:var(--card);border:1px solid var(--border);border-radius:var(--radius);
+             padding:1.1rem 1.3rem;display:flex;flex-direction:column;gap:.4rem;
+             transition:box-shadow .2s,transform .2s,border-color .2s}
+.article-card:hover{box-shadow:var(--shadow-hover);transform:translateY(-2px);border-color:#c5cae9}
+.card-meta{display:flex;gap:.35rem;align-items:center;flex-wrap:wrap}
+.card-status{padding:.1rem .55rem;border-radius:99px;font-size:.68rem;font-weight:600;letter-spacing:.3px}
+.s-new{background:linear-gradient(135deg,#e8f5e9,#c8e6c9);color:#2e7d32}
+.s-old{background:linear-gradient(135deg,#e3f2fd,#bbdefb);color:#1565c0}
+.s-classic{background:linear-gradient(135deg,#f3e5f5,#e1bee7);color:#6a1b9a}
+.card-tag{padding:.1rem .5rem;border-radius:99px;font-size:.65rem;background:var(--card2);color:var(--muted)}
+.card-source{font-size:.75rem;color:var(--muted)}
+.card-title{font-size:.92rem;font-weight:600;line-height:1.45;color:var(--text)}
 .card-title a{color:var(--text)}
 .article-card:hover .card-title a{color:var(--accent)}
-.card-summary{font-size:.82rem;color:#555;flex:1;line-height:1.6}
-.card-footer{margin-top:.3rem;display:flex;justify-content:space-between;align-items:center}
-.card-date{font-size:.76rem;color:var(--muted)}
-.card-link{font-size:.8rem;color:var(--accent);font-weight:500}
+.card-summary{font-size:.8rem;color:#5a6178;flex:1;line-height:1.65;display:-webkit-box;
+              -webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden}
+.card-footer{margin-top:.2rem;display:flex;justify-content:space-between;align-items:center}
+.card-date{font-size:.73rem;color:var(--muted)}
+.card-link{font-size:.78rem;color:var(--accent);font-weight:600}
 .card-link:hover{text-decoration:underline}
 
 /* ── 页面头部 ── */
-.sec-header{margin-bottom:1.5rem;padding-bottom:.8rem;border-bottom:2px solid var(--accent)}
-.sec-header h1{font-size:1.5rem}
-.sec-header p{color:var(--muted);margin-top:.3rem;font-size:.88rem}
-.sec-header .updated{font-size:.78rem;margin-top:.4rem}
+.sec-header{margin-bottom:2rem;padding-bottom:1.2rem;border-bottom:2px solid var(--border);
+            position:relative}
+.sec-header::after{content:"";position:absolute;bottom:-2px;left:0;width:80px;height:2px;
+                    background:linear-gradient(90deg,var(--accent),var(--accent2))}
+.sec-header h1{font-size:1.55rem;font-weight:800;color:var(--text);line-height:1.3}
+.sec-header p{color:var(--muted);margin-top:.4rem;font-size:.88rem}
+.sec-header .updated{font-size:.76rem;margin-top:.5rem;color:var(--accent);font-weight:500}
 
 /* ── 标签过滤栏 ── */
-.filter-bar{display:flex;gap:.5rem;flex-wrap:wrap;margin-bottom:1.5rem}
-.filter-tag{padding:.3rem .85rem;border-radius:99px;font-size:.78rem;background:var(--card);
-            border:1px solid var(--border);color:var(--muted);cursor:pointer;transition:all .15s}
+.filter-bar{display:flex;gap:.5rem;flex-wrap:wrap;margin-bottom:1.8rem}
+.filter-tag{padding:.35rem .9rem;border-radius:99px;font-size:.78rem;
+            background:var(--card);border:1px solid var(--border);color:var(--muted);
+            cursor:pointer;transition:all .15s;font-weight:500}
 .filter-tag:hover{background:var(--acc-bg);color:var(--accent);border-color:var(--accent)}
-.filter-tag.active{background:var(--accent);color:#fff;border-color:var(--accent)}
+.filter-tag.active{background:var(--accent);color:#fff;border-color:var(--accent);box-shadow:0 2px 8px rgba(92,107,192,.3)}
+
+/* ── 树形列表（工具页/学习资源页） ── */
+.tree-layout{display:grid;grid-template-columns:280px 1fr;gap:1.5rem;align-items:start}
+.tree-nav{background:var(--card);border:1px solid var(--border);border-radius:var(--radius);
+         padding:1rem 0;position:sticky;top:70px}
+.tree-nav-header{padding:.5rem 1.1rem .8rem;font-size:.78rem;font-weight:700;color:var(--muted);
+                text-transform:uppercase;letter-spacing:1px;border-bottom:1px solid var(--border);
+                margin-bottom:.5rem}
+.tree-item{padding:.55rem 1.1rem;font-size:.85rem;color:var(--text);cursor:pointer;
+           transition:background .12s,color .12s;border-left:3px solid transparent;
+           display:flex;align-items:center;gap:.5rem}
+.tree-item:hover{background:var(--card2);color:var(--accent)}
+.tree-item.active{background:rgba(92,107,192,.1);color:var(--accent);border-left-color:var(--accent);font-weight:600}
+.tree-item .tree-icon{font-size:1rem}
+
+/* 工具详情面板 */
+.tool-panel{display:flex;flex-direction:column;gap:.8rem}
+.tool-detail{background:var(--card);border:1px solid var(--border);border-radius:var(--radius);
+            padding:1.5rem;opacity:0;transition:opacity .25s,box-shadow .25s}
+.tool-detail.visible{opacity:1;box-shadow:var(--shadow)}
+.tool-detail h2{font-size:1.2rem;font-weight:800;margin-bottom:.3rem;display:flex;align-items:center;gap:.5rem}
+.tool-detail .tool-badge{padding:.15rem .6rem;border-radius:99px;font-size:.68rem;
+                         background:var(--acc-bg);color:var(--accent);font-weight:600}
+.tool-detail .tool-desc{font-size:.85rem;color:#5a6178;line-height:1.7;margin:.6rem 0}
+.tool-detail .tool-meta{display:flex;flex-wrap:wrap;gap:.5rem;margin:.6rem 0}
+.tool-detail .meta-chip{padding:.2rem .7rem;background:var(--card2);border-radius:99px;
+                        font-size:.73rem;color:var(--muted)}
+.tool-detail h3{font-size:.88rem;font-weight:700;margin-top:1rem;margin-bottom:.5rem;
+                color:var(--text);padding-bottom:.3rem;border-bottom:1px solid var(--border)}
+.tool-detail ul{margin-left:1.2rem;font-size:.82rem;color:#5a6178;line-height:1.9}
+.tool-detail ul li{list-style:disc}
+.tool-detail .resource-links{display:flex;flex-direction:column;gap:.4rem;margin-top:.6rem}
+.tool-detail .res-link{display:flex;align-items:center;gap:.4rem;padding:.5rem .8rem;
+                        background:var(--card2);border-radius:var(--radius-sm);font-size:.8rem;
+                        color:var(--accent);transition:background .12s}
+.tool-detail .res-link:hover{background:var(--acc-bg);text-decoration:none}
+
+/* ── 动态数字统计 ── */
+.stats-row{display:flex;gap:1rem;flex-wrap:wrap;margin:1.5rem 0}
+.stat-card{background:linear-gradient(135deg,var(--accent),#3949ab);color:#fff;
+           border-radius:var(--radius);padding:1rem 1.4rem;flex:1;min-width:120px;
+           box-shadow:0 4px 15px rgba(92,107,192,.3)}
+.stat-card .stat-num{font-size:1.6rem;font-weight:800;line-height:1.2}
+.stat-card .stat-label{font-size:.73rem;opacity:.8;margin-top:.2rem}
+
+/* ── 学习资源页标签切换 ── */
+.tutorial-tabs{display:flex;gap:.3rem;border-bottom:2px solid var(--border);margin-bottom:1.5rem}
+.tut-tab{padding:.55rem 1.2rem;font-size:.85rem;color:var(--muted);cursor:pointer;
+         border-bottom:2px solid transparent;margin-bottom:-2px;transition:all .15s;font-weight:600}
+.tut-tab:hover{color:var(--accent)}
+.tut-tab.active{color:var(--accent);border-bottom-color:var(--accent)}
+.tut-content{display:none}
+.tut-content.active{display:block;animation:fadeIn .2s ease}
+@keyframes fadeIn{from{opacity:0;transform:translateY(4px)}to{opacity:1;transform:none}}
+
+/* ── 引用块 ── */
+blockquote{margin:1rem 0;padding:.8rem 1.2rem;background:linear-gradient(135deg,var(--acc-bg),#e8eaf6);
+           border-left:4px solid var(--accent);border-radius:0 var(--radius-sm) var(--radius-sm) 0;
+           font-size:.88rem;color:#4a5580;line-height:1.7}
+
+/* ── 首页公告栏 ── */
+.announcement{background:linear-gradient(135deg,#fff9c4,#fff59d);border:1px solid #f9a825;
+              border-radius:var(--radius);padding:.9rem 1.2rem;margin-bottom:1.5rem;
+              display:flex;align-items:flex-start;gap:.7rem;font-size:.83rem;color:#5d4037}
+.announcement::before{content:"📢";font-size:1.1rem;flex-shrink:0}
+
+/* ── 辅助类 ── */
+.section-title{font-size:1rem;font-weight:700;color:var(--text);margin:1.8rem 0 .8rem;
+               display:flex;align-items:center;gap:.5rem}
+.section-title::after{content:"";flex:1;height:1px;background:var(--border)}
+.text-muted{color:var(--muted);font-size:.82rem}
+.divider{border:none;border-top:1px solid var(--border);margin:1.5rem 0}
 
 /* ── 响应式 ── */
+@media(max-width:900px){
+  .tree-layout{grid-template-columns:1fr}
+  .tree-nav{position:static}
+}
 @media(max-width:768px){
   #sidebar{transform:translateX(-100%);transition:transform .3s;z-index:100}
   #sidebar.open{transform:translateX(0)}
   #main{margin-left:0}
   #sb-toggle{display:flex;align-items:center;justify-content:center;width:36px;height:36px;
-             background:#f0f0f0;border-radius:6px;border:none;cursor:pointer;font-size:1.2rem}
+             background:#f0f0f0;border-radius:var(--radius-sm);border:none;cursor:pointer;font-size:1.2rem}
   #content{padding:1.2rem}
   .card-grid{grid-template-columns:1fr}
+  .stats-row{flex-direction:column}
 }
 </style>
 </head>
 <body>
 <div id="sidebar">
 <div id="sb-header">定量药理与临床药理前沿追踪<span>定量药理 · 临床药理 · 前沿追踪</span></div>
+<div id="sb-search"><input type="text" placeholder="搜索导航…" id="nav-search" oninput="handleSearch(this.value)"></div>
 <div id="nav-tree">
 <a class="nav-link" href="/index.html">🏠 首页</a>
 <div class="nav-item" id="nav-item-qpm">
@@ -115,6 +251,14 @@ footer a{color:var(--accent)}
 <a class="nav-link" href="/articles/index.html">📚 文章总目录</a>
 <a class="nav-link" href="/regulations/index.html">📋 法规与指南</a>
 <a class="nav-link active" href="/conferences/index.html">🎓 会议与培训</a>
+<div class="nav-item" id="nav-item-tutorials">
+<div class="nav-link" onclick="toggleNav('tutorials')">📖 学习资源<span class="arrow">&#9658;</span></div>
+<div class="nav-children" id="nav-tutorials" style="display:none">
+<a class="nav-link" href="/tutorials/introduction.md">入门教程</a>
+<a class="nav-link" href="/tutorials/advanced.md">进阶教程</a>
+<a class="nav-link" href="/tutorials/practice.md">实战资源</a>
+<a class="nav-link" href="/tutorials/expert-sharing.md">专家分享</a>
+</div></div>
 <div class="nav-item" id="nav-item-experts">
 <div class="nav-link" onclick="toggleNav('experts')">👥 专家名录<span class="arrow">&#9658;</span></div>
 <div class="nav-children" id="nav-experts" style="display:none">
@@ -133,14 +277,14 @@ footer a{color:var(--accent)}
 <div id="topbar">
 <button id="sb-toggle" onclick="document.getElementById('sidebar').classList.toggle('open')">&#9776;</button>
 <div class="sec-title">🎓 会议与培训</div>
-<div id="breadcrumb"><a href="/index.html">首页</a> &rsaquo; 🎓 会议与培训</div>
+<div id="breadcrumb"><a href="/index.html">首页</a> <span>›</span> 🎓 会议与培训</div>
 <div id="topbar-right">更新: 2026-05-02</div>
 </div>
 <div id="content">
 <div class="sec-header"><h1>🎓 会议与培训</h1></div><div class="md-body"><h2>🎓 会议与培训</h2>
-<hr>
+<hr class="divider">
 <h3>🇨🇳 国内会议</h3>
-<table><thead>
+<div class="table-wrap"><table><thead>
 <tr><th>会议名称</th><th>举办时间</th><th>地点</th><th>主要内容</th></tr>
 <tr><th>**全国临床药理学学术年会**</th><th>每年10月</th><th>轮流</th><th>中华医学会临床药理学分会主办，设定量药理专题会场，论文报告与培训</th></tr>
 <tr><th>**中国定量药理学大会**</th><th>每年7月</th><th>轮流</th><th>国内定量药理领域最专业会议，PBPK/PopPK/PKPD建模技术研讨</th></tr>
@@ -149,10 +293,10 @@ footer a{color:var(--accent)}
 <tr><th>**北京大学临床药理年会**</th><th>每年6月</th><th>北京</th><th>聚焦临床药理研究方法、监管要求、案例分析</th></tr>
 </thead><tbody>
 <tr><td>**药学学术年会（临床药理分场）**</td><td>每年8-9月</td><td>轮流</td><td>中国药学会主办，临床药理与定量药理研究进展</td></tr>
-</tbody></table>
-<hr>
+</tbody></table></div>
+<hr class="divider">
 <h3>🌐 国际会议</h3>
-<table><thead>
+<div class="table-wrap"><table><thead>
 <tr><th>会议名称</th><th>举办时间</th><th>地点</th><th>主要内容</th></tr>
 <tr><th>**ASCPT Annual Meeting**</th><th>每年3月</th><th>美国</th><th>临床药理与定量药理领域顶级会议，年度最佳论文颁奖</th></tr>
 <tr><th>**ACCP Global Conference**</th><th>每年10月</th><th>轮流</th><th>全球临床药理教育、研究与实践进展</th></tr>
@@ -162,20 +306,20 @@ footer a{color:var(--accent)}
 <tr><th>**American Association of Pharmaceutical Scientists (AAPS)**</th><th>每年11月</th><th>美国</th><th>药物科学，含药代动力学与定量药理方向</th></tr>
 </thead><tbody>
 <tr><td>**IQ Consortium - Pharmacometrics Workshop**</td><td>不定期</td><td>美国/欧洲</td><td>工业界定量药理专家交流</td></tr>
-</tbody></table>
-<hr>
+</tbody></table></div>
+<hr class="divider">
 <h3>📚 在线培训资源</h3>
-<table><thead>
+<div class="table-wrap"><table><thead>
 <tr><th>资源名称</th><th>平台</th><th>内容</th></tr>
 <tr><th>NMPA/CDE 指导原则培训视频</th><th>CDE官网</th><th>定量药理相关指导原则解读</th></tr>
 <tr><th>FDA MIDD案例库</th><th>FDA Website</th><th>MIDD试点案例视频讲解</th></tr>
 <tr><th>PAGE Meeting Recordings</th><th>PAGE官网</th><th>历年会议报告录像</th></tr>
 <tr><th>Certara Academy</th><th>Certara</th><th>GastroPlus、NONMEM在线培训</th></tr>
 <tr><th>University of Pittsburgh PopPK Course</th><th>Coursera</th><th>PopPK基础与进阶课程</th></tr>
-</tbody></table>
-<hr>
+</tbody></table></div>
+<hr class="divider">
 <h3>📅 近期会议预告 (2025)</h3>
-<table><thead>
+<div class="table-wrap"><table><thead>
 <tr><th>会议</th><th>时间</th><th>地点</th></tr>
 </thead><tbody>
 <tr><td>ASCPT 2025</td><td>2025-03-18-21</td><td>美国 奥斯汀</td></tr>
@@ -185,18 +329,32 @@ footer a{color:var(--accent)}
 <tr><td>全国临床药理学学术年会 2025</td><td>2025-10（预计）</td><td>待定</td></tr>
 </thead><tbody>
 <tr><td>PAGE 2025</td><td>2025-06 (预计)</td><td>荷兰 阿姆斯特丹</td></tr>
-</tbody></table>
-<hr>
+</tbody></table></div>
+<hr class="divider">
 <p>[→ (/index.html))</p></div>
 </div>
 <footer>© 2025 定量药理与临床药理前沿追踪 · <a href="https://github.com/seansilencer/quantitative-pharma-blog">GitHub</a></footer>
 </div>
 <script>
+// 搜索高亮
+function highlight(text, term){
+  if(!term)return text;
+  var re=new RegExp('('+term.replace(/[.*+?^${}()|[\]\\]/g,'\\$&')+')','gi');
+  return text.replace(re,'<mark style="background:#fff176;padding:0 2px;border-radius:2px">$1</mark>');
+}
+
+// 导航切换
 function toggleNav(id){
   var el=document.getElementById('nav-'+id);
-  if(el){el.style.display=el.style.display==='block'?'none':'block';
+  if(!el)return;
+  var isOpen=el.style.display==='block';
+  el.style.display=isOpen?'none':'block';
+  el.classList.toggle('open',!isOpen);
   var parent=document.getElementById('nav-item-'+id);
-  if(parent)parent.classList.toggle('open')}}
+  if(parent)parent.classList.toggle('open',!isOpen);
+}
+
+// 设置当前活跃导航
 function setActive(path){
   var np=path.startsWith('/')?path:'/'+path;
   document.querySelectorAll('.nav-link').forEach(function(el){
@@ -206,10 +364,12 @@ function setActive(path){
     if(nh===np){
       el.classList.add('active');
       var p=el.closest('.nav-children');
-      if(p){p.style.display='block';var pi=p.previousElementSibling;
+      if(p){p.style.display='block';p.classList.add('open');
+      var pi=p.previousElementSibling;
       if(pi&&pi.classList.contains('nav-link'))pi.classList.add('open')}
     }
   });
+  // 面包屑
   var crumbs=document.getElementById('breadcrumb');
   if(crumbs){
     var parts=path.split('/').filter(Boolean);
@@ -218,11 +378,13 @@ function setActive(path){
     for(var i=0;i<parts.length-1;i++){
       acc+='/'+parts[i];
       var label=document.querySelector('.nav-link[href="'+acc+'.html"],.nav-link[href="'+acc+'/index.html"]');
-      if(label){html+=' > <a href="'+acc+'/index.html">'+label.textContent.trim()+'</a>'}
+      if(label){html+=' <span>›</span> <a href="'+acc+'/index.html">'+label.textContent.trim()+'</a>'}
     }
     crumbs.innerHTML=html;
   }
 }
+
+// 卡片标签过滤
 function filterCards(tag){
   var cards=document.querySelectorAll('.article-card');
   cards.forEach(function(c){
@@ -233,7 +395,41 @@ function filterCards(tag){
     t.classList.toggle('active',t.getAttribute('data-tag')===tag);
   });
 }
+
+// 工具详情面板切换（树形列表点击）
+function showTool(id){
+  document.querySelectorAll('.tool-detail').forEach(function(el){el.classList.remove('visible')});
+  var el=document.getElementById('tool-'+id);
+  if(el)el.classList.add('visible');
+  document.querySelectorAll('.tree-item').forEach(function(el){el.classList.remove('active')});
+  var active=document.querySelector('.tree-item[data-tool="'+id+'"]');
+  if(active)active.classList.add('active');
+  // 移动端跳到详情
+  if(window.innerWidth<=900){
+    document.getElementById('tool-detail-container').scrollIntoView({behavior:'smooth'});
+  }
+}
+
+// 学习资源标签页
+function switchTutorial(id){
+  document.querySelectorAll('.tut-content').forEach(function(el){el.classList.remove('active')});
+  document.querySelectorAll('.tut-tab').forEach(function(el){el.classList.remove('active')});
+  var el=document.getElementById('tut-'+id);
+  if(el)el.classList.add('active');
+  var tab=document.querySelector('.tut-tab[data-tut="'+id+'"]');
+  if(tab)tab.classList.add('active');
+}
+
+// 工具页初始化
+function initToolPage(firstId){
+  if(firstId)showTool(firstId);
+  else{
+    var first=document.querySelector('.tool-detail');
+    if(first)first.classList.add('visible');
+  }
+}
 </script>
 <script>setActive("/conferences/index.html")</script>
+
 </body>
 </html>
