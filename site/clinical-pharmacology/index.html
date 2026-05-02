@@ -6,9 +6,9 @@
 <title>临床药理 | 定量药理与临床药理前沿追踪</title>
 <meta name="description" content="研究药物在人体内的吸收、分布、代谢和排泄（ADME）规律，为新药研发和临床合理用药提供科学依据。">
 <style>
-:root{--bg:#f8f9fc;--sb:#1e2535;--sb-fg:#c8d0e0;--sb-active:#5c6bc0;
+:root{--bg:#f4f6fb;--sb:#1a1f2e;--sb-fg:#a8b3cf;--sb-active:#5c6bc0;
       --accent:#5c6bc0;--acc-bg:#e8eaf6;--text:#1a1e2e;--muted:#6b7280;
-      --card:#fff;--border:#e2e8f0}
+      --card:#fff;--border:#e2e8f0;--card-shadow:0 2px 8px rgba(92,107,192,.1)}
 *{box-sizing:border-box;margin:0;padding:0}
 body{display:flex;min-height:100vh;background:var(--bg);color:var(--text);
      font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;line-height:1.6}
@@ -16,81 +16,74 @@ a{color:var(--accent);text-decoration:none}
 a:hover{text-decoration:underline}
 
 /* ── 侧边栏 ── */
-#sidebar{width:260px;min-width:260px;background:var(--sb);color:var(--sb-fg);
+#sidebar{width:270px;min-width:270px;background:var(--sb);color:var(--sb-fg);
          position:fixed;top:0;left:0;height:100vh;overflow-y:auto;
          display:flex;flex-direction:column}
-#sb-header{padding:1.2rem 1rem;border-bottom:1px solid rgba(255,255,255,.08);color:#fff;font-weight:700;font-size:.95rem;line-height:1.4}
-#sb-header span{font-size:.75rem;opacity:.55;font-weight:400;display:block;margin-top:.2rem}
+#sb-header{padding:1.2rem 1rem 1rem;border-bottom:1px solid rgba(255,255,255,.07);
+           color:#fff;font-weight:700;font-size:.95rem;line-height:1.4}
+#sb-header span{font-size:.72rem;opacity:.45;font-weight:400;display:block;margin-top:.25rem}
+#nav-tree{padding:.5rem 0 2rem}
 .nav-item{padding:0}
-.nav-link{display:flex;align-items:center;padding:.55rem 1rem;font-size:.9rem;
+.nav-link{display:flex;align-items:center;padding:.55rem 1rem;font-size:.88rem;
           color:var(--sb-fg);cursor:pointer;transition:background .15s,color .15s;
           text-decoration:none;user-select:none}
-.nav-link:hover{background:rgba(255,255,255,.07);color:#fff}
+.nav-link:hover{background:rgba(255,255,255,.06);color:#fff}
 .nav-link.active{background:var(--sb-active);color:#fff;font-weight:500}
-.nav-link .arrow{margin-left:auto;font-size:.7rem;transition:transform .2s}
+.nav-link .arrow{margin-left:auto;font-size:.65rem;transition:transform .2s;color:#566480}
 .nav-link.open .arrow{transform:rotate(90deg)}
-.nav-children{display:none;padding-left:.8rem}
-.nav-children .nav-link{padding:.4rem 1rem .4rem 1.8rem;font-size:.85rem}
+.nav-children{display:none;padding-left:.6rem}
+.nav-children .nav-link{padding:.38rem 1rem .38rem 2rem;font-size:.82rem}
 
 /* ── 主区 ── */
-#main{margin-left:260px;flex:1;display:flex;flex-direction:column;min-width:0}
-#topbar{background:#fff;border-bottom:1px solid var(--border);padding:.85rem 2rem;
+#main{margin-left:270px;flex:1;display:flex;flex-direction:column;min-width:0}
+#topbar{background:#fff;border-bottom:1px solid var(--border);padding:.75rem 2rem;
         display:flex;align-items:center;gap:1rem;position:sticky;top:0;z-index:10}
-#breadcrumb{font-size:.85rem;color:var(--muted)}
+#topbar .sec-title{flex:1;font-size:.9rem;font-weight:600;color:var(--text)}
+#breadcrumb{font-size:.82rem;color:var(--muted)}
 #breadcrumb a{color:var(--accent)}
-#topbar-right{margin-left:auto;font-size:.82rem;color:var(--muted)}
-#content{padding:2rem 2.5rem;flex:1;max-width:1100px}
+#topbar-right{margin-left:auto;font-size:.78rem;color:var(--muted)}
+#content{padding:2rem 2.5rem 4rem}
 footer{background:#fff;border-top:1px solid var(--border);padding:.8rem 2rem;
-       text-align:center;font-size:.8rem;color:var(--muted)}
+       text-align:center;font-size:.78rem;color:var(--muted)}
 footer a{color:var(--accent)}
 
 /* ── 卡片网格 ── */
 .card-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:1rem;margin-top:1rem}
-.article-card{background:var(--card);border:1px solid var(--border);border-radius:10px;
+.article-card{background:var(--card);border:1px solid var(--border);border-radius:12px;
               padding:1.1rem 1.2rem;transition:box-shadow .2s,transform .2s;
-              display:flex;flex-direction:column;gap:.35rem}
-.article-card:hover{box-shadow:0 6px 20px rgba(92,107,192,.18);transform:translateY(-2px)}
-.card-meta{display:flex;gap:.5rem;align-items:center;flex-wrap:wrap}
-.card-status{padding:.1rem .45rem;border-radius:99px;font-size:.72rem;font-weight:600}
+              display:flex;flex-direction:column;gap:.4rem;cursor:pointer}
+.article-card:hover{box-shadow:0 6px 20px rgba(92,107,192,.15);transform:translateY(-2px)}
+.card-meta{display:flex;gap:.4rem;align-items:center;flex-wrap:wrap}
+.card-status{padding:.1rem .5rem;border-radius:99px;font-size:.7rem;font-weight:600}
 .s-new{background:#e8f5e9;color:#2e7d32}
 .s-old{background:#e3f2fd;color:#1565c0}
 .s-classic{background:#f3e5f5;color:#6a1b9a}
-.card-source{font-size:.78rem;color:var(--muted)}
-.card-title{font-size:.98rem;font-weight:600;line-height:1.4}
+.card-source{font-size:.76rem;color:var(--muted)}
+.card-title{font-size:.95rem;font-weight:600;line-height:1.4}
 .card-title a{color:var(--text)}
 .article-card:hover .card-title a{color:var(--accent)}
-.card-summary{font-size:.83rem;color:#555;flex:1;line-height:1.55}
-.card-footer{margin-top:.35rem;display:flex;justify-content:space-between;align-items:center}
-.card-date{font-size:.78rem;color:var(--muted)}
-.card-link{font-size:.82rem;color:var(--accent);font-weight:500;white-space:nowrap}
+.card-summary{font-size:.82rem;color:#555;flex:1;line-height:1.6}
+.card-footer{margin-top:.3rem;display:flex;justify-content:space-between;align-items:center}
+.card-date{font-size:.76rem;color:var(--muted)}
+.card-link{font-size:.8rem;color:var(--accent);font-weight:500}
 .card-link:hover{text-decoration:underline}
 
 /* ── 页面头部 ── */
 .sec-header{margin-bottom:1.5rem;padding-bottom:.8rem;border-bottom:2px solid var(--accent)}
-.sec-header h1{font-size:1.55rem}
+.sec-header h1{font-size:1.5rem}
 .sec-header p{color:var(--muted);margin-top:.3rem;font-size:.88rem}
-.sec-header .updated{font-size:.8rem;margin-top:.4rem}
+.sec-header .updated{font-size:.78rem;margin-top:.4rem}
 
-/* ── 正文排版 ── */
-.md-body h2{font-size:1.2rem;margin:1.6rem 0 .6rem;padding-bottom:.3rem;border-bottom:1px solid var(--border)}
-.md-body h3{font-size:1.02rem;margin:1.2rem 0 .4rem}
-.md-body p{margin:.5rem 0;line-height:1.75}
-.md-body ul,.md-body ol{margin:.5rem 0;padding-left:1.4rem}
-.md-body li{margin:.25rem 0}
-.md-body blockquote{margin:.8rem 0;padding:.6rem 1rem;border-left:3px solid var(--accent);background:var(--acc-bg);border-radius:0 6px 6px 0}
-.md-body table{width:100%;border-collapse:collapse;margin:.8rem 0;font-size:.88rem}
-.md-body th,.md-body td{padding:.5rem .75rem;border:1px solid var(--border);text-align:left}
-.md-body th{background:var(--accent);color:#fff;font-weight:500}
-.md-body tr:nth-child(even){background:rgba(0,0,0,.03)}
-.md-body code{background:#f0f0f0;padding:.1rem .35rem;border-radius:3px;font-size:.85em}
-.md-body pre{background:#f4f4f4;padding:.9rem;border-radius:6px;overflow-x:auto;margin:.8rem 0}
-.md-body pre code{background:none;padding:0}
-.md-body hr{border:none;border-top:1px solid var(--border);margin:1.5rem 0}
-.md-body strong{font-weight:600}
+/* ── 标签过滤栏 ── */
+.filter-bar{display:flex;gap:.5rem;flex-wrap:wrap;margin-bottom:1.5rem}
+.filter-tag{padding:.3rem .85rem;border-radius:99px;font-size:.78rem;background:var(--card);
+            border:1px solid var(--border);color:var(--muted);cursor:pointer;transition:all .15s}
+.filter-tag:hover{background:var(--acc-bg);color:var(--accent);border-color:var(--accent)}
+.filter-tag.active{background:var(--accent);color:#fff;border-color:var(--accent)}
 
 /* ── 响应式 ── */
 @media(max-width:768px){
-  #sidebar{transform:translateX(-100%);z-index:100}
+  #sidebar{transform:translateX(-100%);transition:transform .3s;z-index:100}
   #sidebar.open{transform:translateX(0)}
   #main{margin-left:0}
   #sb-toggle{display:flex;align-items:center;justify-content:center;width:36px;height:36px;
@@ -139,6 +132,7 @@ footer a{color:var(--accent)}
 <div id="main">
 <div id="topbar">
 <button id="sb-toggle" onclick="document.getElementById('sidebar').classList.toggle('open')">&#9776;</button>
+<div class="sec-title">临床药理</div>
 <div id="breadcrumb"><a href="/index.html">首页</a> &rsaquo; 临床药理</div>
 <div id="topbar-right">更新: 2026-05-02</div>
 </div>
@@ -175,17 +169,26 @@ footer a{color:var(--accent)}
 </ul>
 <p>[→ 查看临床药理文献](/articles/index.html)</p></div>
 </div>
-<footer>© 2025 定量药理与临床药理前沿追踪 · 内容版权归属原作者 · <a href="https://github.com/seansilencer/quantitative-pharma-blog">GitHub</a></footer>
+<footer>© 2025 定量药理与临床药理前沿追踪 · <a href="https://github.com/seansilencer/quantitative-pharma-blog">GitHub</a></footer>
 </div>
 <script>
-function toggleNav(id){var el=document.getElementById('nav-'+id);if(el){el.style.display=el.style.display==='block'?'none':'block';var parent=document.getElementById('nav-item-'+id);if(parent)parent.classList.toggle('open')}}
+function toggleNav(id){
+  var el=document.getElementById('nav-'+id);
+  if(el){el.style.display=el.style.display==='block'?'none':'block';
+  var parent=document.getElementById('nav-item-'+id);
+  if(parent)parent.classList.toggle('open')}}
 function setActive(path){
-  var normalizedPath = path.startsWith('/') ? path : '/' + path;
+  var np=path.startsWith('/')?path:'/'+path;
   document.querySelectorAll('.nav-link').forEach(function(el){
     el.classList.remove('active');
-    var href = el.getAttribute('href') || '';
-    var normalizedHref = href.startsWith('/') ? href : '/' + href;
-    if(normalizedHref === normalizedPath){el.classList.add('active');var p=el.closest('.nav-children');if(p){p.style.display='block';var pi=p.previousElementSibling;if(pi&&pi.classList.contains('nav-link'))pi.classList.add('open')}}
+    var href=el.getAttribute('href')||'';
+    var nh=href.startsWith('/')?href:'/'+href;
+    if(nh===np){
+      el.classList.add('active');
+      var p=el.closest('.nav-children');
+      if(p){p.style.display='block';var pi=p.previousElementSibling;
+      if(pi&&pi.classList.contains('nav-link'))pi.classList.add('open')}
+    }
   });
   var crumbs=document.getElementById('breadcrumb');
   if(crumbs){
@@ -200,7 +203,17 @@ function setActive(path){
     crumbs.innerHTML=html;
   }
 }
+function filterCards(tag){
+  var cards=document.querySelectorAll('.article-card');
+  cards.forEach(function(c){
+    var show=(tag==='all'||c.getAttribute('data-tag')===tag);
+    c.style.display=show?'flex':'none';
+  });
+  document.querySelectorAll('.filter-tag').forEach(function(t){
+    t.classList.toggle('active',t.getAttribute('data-tag')===tag);
+  });
+}
 </script>
-<script>setActive("clinical-pharmacology/index.html")</script>
+<script>setActive("/clinical-pharmacology/index.html")</script>
 </body>
 </html>

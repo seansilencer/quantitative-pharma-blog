@@ -6,9 +6,9 @@
 <title>👥 International Expert Directory | 定量药理与临床药理前沿追踪</title>
 <meta name="description" content="Key experts in Clinical Pharmacology and Quantitative Pharmacology (2023-2025)">
 <style>
-:root{--bg:#f8f9fc;--sb:#1e2535;--sb-fg:#c8d0e0;--sb-active:#5c6bc0;
+:root{--bg:#f4f6fb;--sb:#1a1f2e;--sb-fg:#a8b3cf;--sb-active:#5c6bc0;
       --accent:#5c6bc0;--acc-bg:#e8eaf6;--text:#1a1e2e;--muted:#6b7280;
-      --card:#fff;--border:#e2e8f0}
+      --card:#fff;--border:#e2e8f0;--card-shadow:0 2px 8px rgba(92,107,192,.1)}
 *{box-sizing:border-box;margin:0;padding:0}
 body{display:flex;min-height:100vh;background:var(--bg);color:var(--text);
      font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;line-height:1.6}
@@ -16,81 +16,74 @@ a{color:var(--accent);text-decoration:none}
 a:hover{text-decoration:underline}
 
 /* ── 侧边栏 ── */
-#sidebar{width:260px;min-width:260px;background:var(--sb);color:var(--sb-fg);
+#sidebar{width:270px;min-width:270px;background:var(--sb);color:var(--sb-fg);
          position:fixed;top:0;left:0;height:100vh;overflow-y:auto;
          display:flex;flex-direction:column}
-#sb-header{padding:1.2rem 1rem;border-bottom:1px solid rgba(255,255,255,.08);color:#fff;font-weight:700;font-size:.95rem;line-height:1.4}
-#sb-header span{font-size:.75rem;opacity:.55;font-weight:400;display:block;margin-top:.2rem}
+#sb-header{padding:1.2rem 1rem 1rem;border-bottom:1px solid rgba(255,255,255,.07);
+           color:#fff;font-weight:700;font-size:.95rem;line-height:1.4}
+#sb-header span{font-size:.72rem;opacity:.45;font-weight:400;display:block;margin-top:.25rem}
+#nav-tree{padding:.5rem 0 2rem}
 .nav-item{padding:0}
-.nav-link{display:flex;align-items:center;padding:.55rem 1rem;font-size:.9rem;
+.nav-link{display:flex;align-items:center;padding:.55rem 1rem;font-size:.88rem;
           color:var(--sb-fg);cursor:pointer;transition:background .15s,color .15s;
           text-decoration:none;user-select:none}
-.nav-link:hover{background:rgba(255,255,255,.07);color:#fff}
+.nav-link:hover{background:rgba(255,255,255,.06);color:#fff}
 .nav-link.active{background:var(--sb-active);color:#fff;font-weight:500}
-.nav-link .arrow{margin-left:auto;font-size:.7rem;transition:transform .2s}
+.nav-link .arrow{margin-left:auto;font-size:.65rem;transition:transform .2s;color:#566480}
 .nav-link.open .arrow{transform:rotate(90deg)}
-.nav-children{display:none;padding-left:.8rem}
-.nav-children .nav-link{padding:.4rem 1rem .4rem 1.8rem;font-size:.85rem}
+.nav-children{display:none;padding-left:.6rem}
+.nav-children .nav-link{padding:.38rem 1rem .38rem 2rem;font-size:.82rem}
 
 /* ── 主区 ── */
-#main{margin-left:260px;flex:1;display:flex;flex-direction:column;min-width:0}
-#topbar{background:#fff;border-bottom:1px solid var(--border);padding:.85rem 2rem;
+#main{margin-left:270px;flex:1;display:flex;flex-direction:column;min-width:0}
+#topbar{background:#fff;border-bottom:1px solid var(--border);padding:.75rem 2rem;
         display:flex;align-items:center;gap:1rem;position:sticky;top:0;z-index:10}
-#breadcrumb{font-size:.85rem;color:var(--muted)}
+#topbar .sec-title{flex:1;font-size:.9rem;font-weight:600;color:var(--text)}
+#breadcrumb{font-size:.82rem;color:var(--muted)}
 #breadcrumb a{color:var(--accent)}
-#topbar-right{margin-left:auto;font-size:.82rem;color:var(--muted)}
-#content{padding:2rem 2.5rem;flex:1;max-width:1100px}
+#topbar-right{margin-left:auto;font-size:.78rem;color:var(--muted)}
+#content{padding:2rem 2.5rem 4rem}
 footer{background:#fff;border-top:1px solid var(--border);padding:.8rem 2rem;
-       text-align:center;font-size:.8rem;color:var(--muted)}
+       text-align:center;font-size:.78rem;color:var(--muted)}
 footer a{color:var(--accent)}
 
 /* ── 卡片网格 ── */
 .card-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:1rem;margin-top:1rem}
-.article-card{background:var(--card);border:1px solid var(--border);border-radius:10px;
+.article-card{background:var(--card);border:1px solid var(--border);border-radius:12px;
               padding:1.1rem 1.2rem;transition:box-shadow .2s,transform .2s;
-              display:flex;flex-direction:column;gap:.35rem}
-.article-card:hover{box-shadow:0 6px 20px rgba(92,107,192,.18);transform:translateY(-2px)}
-.card-meta{display:flex;gap:.5rem;align-items:center;flex-wrap:wrap}
-.card-status{padding:.1rem .45rem;border-radius:99px;font-size:.72rem;font-weight:600}
+              display:flex;flex-direction:column;gap:.4rem;cursor:pointer}
+.article-card:hover{box-shadow:0 6px 20px rgba(92,107,192,.15);transform:translateY(-2px)}
+.card-meta{display:flex;gap:.4rem;align-items:center;flex-wrap:wrap}
+.card-status{padding:.1rem .5rem;border-radius:99px;font-size:.7rem;font-weight:600}
 .s-new{background:#e8f5e9;color:#2e7d32}
 .s-old{background:#e3f2fd;color:#1565c0}
 .s-classic{background:#f3e5f5;color:#6a1b9a}
-.card-source{font-size:.78rem;color:var(--muted)}
-.card-title{font-size:.98rem;font-weight:600;line-height:1.4}
+.card-source{font-size:.76rem;color:var(--muted)}
+.card-title{font-size:.95rem;font-weight:600;line-height:1.4}
 .card-title a{color:var(--text)}
 .article-card:hover .card-title a{color:var(--accent)}
-.card-summary{font-size:.83rem;color:#555;flex:1;line-height:1.55}
-.card-footer{margin-top:.35rem;display:flex;justify-content:space-between;align-items:center}
-.card-date{font-size:.78rem;color:var(--muted)}
-.card-link{font-size:.82rem;color:var(--accent);font-weight:500;white-space:nowrap}
+.card-summary{font-size:.82rem;color:#555;flex:1;line-height:1.6}
+.card-footer{margin-top:.3rem;display:flex;justify-content:space-between;align-items:center}
+.card-date{font-size:.76rem;color:var(--muted)}
+.card-link{font-size:.8rem;color:var(--accent);font-weight:500}
 .card-link:hover{text-decoration:underline}
 
 /* ── 页面头部 ── */
 .sec-header{margin-bottom:1.5rem;padding-bottom:.8rem;border-bottom:2px solid var(--accent)}
-.sec-header h1{font-size:1.55rem}
+.sec-header h1{font-size:1.5rem}
 .sec-header p{color:var(--muted);margin-top:.3rem;font-size:.88rem}
-.sec-header .updated{font-size:.8rem;margin-top:.4rem}
+.sec-header .updated{font-size:.78rem;margin-top:.4rem}
 
-/* ── 正文排版 ── */
-.md-body h2{font-size:1.2rem;margin:1.6rem 0 .6rem;padding-bottom:.3rem;border-bottom:1px solid var(--border)}
-.md-body h3{font-size:1.02rem;margin:1.2rem 0 .4rem}
-.md-body p{margin:.5rem 0;line-height:1.75}
-.md-body ul,.md-body ol{margin:.5rem 0;padding-left:1.4rem}
-.md-body li{margin:.25rem 0}
-.md-body blockquote{margin:.8rem 0;padding:.6rem 1rem;border-left:3px solid var(--accent);background:var(--acc-bg);border-radius:0 6px 6px 0}
-.md-body table{width:100%;border-collapse:collapse;margin:.8rem 0;font-size:.88rem}
-.md-body th,.md-body td{padding:.5rem .75rem;border:1px solid var(--border);text-align:left}
-.md-body th{background:var(--accent);color:#fff;font-weight:500}
-.md-body tr:nth-child(even){background:rgba(0,0,0,.03)}
-.md-body code{background:#f0f0f0;padding:.1rem .35rem;border-radius:3px;font-size:.85em}
-.md-body pre{background:#f4f4f4;padding:.9rem;border-radius:6px;overflow-x:auto;margin:.8rem 0}
-.md-body pre code{background:none;padding:0}
-.md-body hr{border:none;border-top:1px solid var(--border);margin:1.5rem 0}
-.md-body strong{font-weight:600}
+/* ── 标签过滤栏 ── */
+.filter-bar{display:flex;gap:.5rem;flex-wrap:wrap;margin-bottom:1.5rem}
+.filter-tag{padding:.3rem .85rem;border-radius:99px;font-size:.78rem;background:var(--card);
+            border:1px solid var(--border);color:var(--muted);cursor:pointer;transition:all .15s}
+.filter-tag:hover{background:var(--acc-bg);color:var(--accent);border-color:var(--accent)}
+.filter-tag.active{background:var(--accent);color:#fff;border-color:var(--accent)}
 
 /* ── 响应式 ── */
 @media(max-width:768px){
-  #sidebar{transform:translateX(-100%);z-index:100}
+  #sidebar{transform:translateX(-100%);transition:transform .3s;z-index:100}
   #sidebar.open{transform:translateX(0)}
   #main{margin-left:0}
   #sb-toggle{display:flex;align-items:center;justify-content:center;width:36px;height:36px;
@@ -139,170 +132,39 @@ footer a{color:var(--accent)}
 <div id="main">
 <div id="topbar">
 <button id="sb-toggle" onclick="document.getElementById('sidebar').classList.toggle('open')">&#9776;</button>
+<div class="sec-title">👥 International Expert Directory</div>
 <div id="breadcrumb"><a href="/index.html">首页</a> &rsaquo; 👥 International Expert Directory</div>
 <div id="topbar-right">更新: 2026-05-02</div>
 </div>
 <div id="content">
-<div class="sec-header"><h1>👥 International Expert Directory</h1><p>Key experts in Clinical Pharmacology and Quantitative Pharmacology (2023-2025)</p></div><div class="md-body"><h2>👥 International Expert Directory</h2>
-<blockquote>Key experts in Clinical Pharmacology and Quantitative Pharmacology (2023-2025)</blockquote>
-<hr>
-<h3>🇺🇸 United States</h3>
-<hr>
-<h4>Raymond **Miller**</h4>
-<ul>
-<li>**Affiliation**: FDA, Center for Drug Evaluation and Research (CDER), Office of Clinical Pharmacology</li>
-<li>**Expertise**: PBPK modeling, regulatory science, pediatric drug development</li>
-<li>**Key Publications**:</li>
-<li>Miller R, et al. PBPK modeling in pediatric drug development: regulatory perspectives. *CPT*, 2025-03</li>
-<li>FDA perspective on physiologically-based pharmacokinetic modeling. *Clin Pharmacol Ther*, 2024-11</li>
-<li>**Role**: Leading FDA's PBPK review and policy development</li>
-<li>**Conference**: Frequent speaker at ASCPT, FDA-PBPK workshop</li>
-</ul>
-<hr>
-<h4>Sri **Ne物** (PhD, FCP)</h4>
-<ul>
-<li>**Affiliation**: University of Maryland School of Pharmacy, Center for Translational Science</li>
-<li>**Expertise**: PopPK/PD, model-based meta-analysis, oncology drug development</li>
-<li>**Key Publications**:</li>
-<li>Ne物 S, et al. Model-based meta-analysis in oncology drug development. *CPT-PSP*, 2024-12</li>
-<li>Quantitative pharmacology in support of oncology dose optimization. *J Clin Pharmacol*, 2024-10</li>
-<li>**Role**: Editorial Board, *CPT*; ACCP Global Conference Scientific Committee</li>
-<li>**Conference**: ASCPT Annual Meeting, PAGE</li>
-</ul>
-<hr>
-<h4>Jogarao **Gobbur**</h4>
-<ul>
-<li>**Affiliation**: Merck & Co., Clinical Pharmacology</li>
-<li>**Expertise**: PBPK, DDI prediction, drug interaction modeling</li>
-<li>**Key Publications**:</li>
-<li>Gobbur J, et al. Applications of PBPK modeling in DDI studies: industry perspective. *CPT*, 2024-11</li>
-<li>Beyond static matrices: dynamic DDI predictions with PBPK. *Drug Metab Dispos*, 2024-09</li>
-<li>**Role**: ACCP Board of Regents; ACoP Program Committee</li>
-</ul>
-<hr>
-<h4>Michael **Bies** (PhD)</h4>
-<ul>
-<li>**Affiliation**: GlaxoSmithKline (formerly FDA/CDER)</li>
-<li>**Expertise**: Regulatory clinical pharmacology, PopPK, MIDD</li>
-<li>**Key Publications**:</li>
-<li>Bies R, et al. Evolution of population pharmacokinetics in drug regulation. *J Clin Pharmacol*, 2024-08</li>
-<li>Model-informed drug development: bridging pharma and regulatory science. *Clin Pharmacol Ther*, 2025-01</li>
-<li>**Role**: Past President, ACCP; Editorial Board, *Clinical Pharmacokinetics*</li>
-</ul>
-<hr>
-<h4>Wang **Liang** (PhD)</h4>
-<ul>
-<li>**Affiliation**: Pfizer, Clinical Pharmacology</li>
-<li>**Expertise**: PK/PD, TMDD modeling, monoclonal antibodies</li>
-<li>**Key Publications**:</li>
-<li>Wang L, et al. Target-mediated drug disposition: theory and practice in PK/PD modeling. *CPT-PSP*, 2025-02</li>
-<li>Quantitative pharmacology in support of monoclonal antibody dosing. *MAbs*, 2024-12</li>
-<li>**Role**: ACoP Scientific Program Chair; Section Editor, *CPT-PSP*</li>
-</ul>
-<hr>
-<h4>Lin **Zhao** (PhD)</h4>
-<ul>
-<li>**Affiliation**: FDA/CDER, Office of Clinical Pharmacology</li>
-<li>**Expertise**: PopPK review, model evaluation, regulatory science</li>
-<li>**Key Publications**:</li>
-<li>Zhao L, et al. FDA guidance on population pharmacokinetics (2024 final). *FDA Guidance Document*, 2024-12</li>
-<li>Quantitative assessment of model adequacy for regulatory decisions. *J Clin Pharmacol*, 2024-07</li>
-<li>**Role**: FDA PopPK working group; ICH E11(R2) implementation support</li>
-</ul>
-<hr>
-<h3>🇬🇧 United Kingdom / Europe</h3>
-<hr>
-<h4>Robin **Fernandez** (PhD)</h4>
-<ul>
-<li>**Affiliation**: University of Manchester / Certara</li>
-<li>**Expertise**: PBPK, IVIVE, organ impairment modeling</li>
-<li>**Key Publications**:</li>
-<li>Fernandez R, et al. PBPK modeling in renal impairment: methodological advances. *CPT*, 2024-08</li>
-<li>In vitro to in vivo extrapolation for metabolic drug-drug interactions. *Drug Metab Dispos*, 2024-06</li>
-<li>**Role**: PAGE meeting Scientific Advisory Group; Editorial Board, *CPT-PSP*</li>
-</ul>
-<hr>
-<h4>Amin **Roma** (PhD)</h4>
-<ul>
-<li>**Affiliation**: EMA (European Medicines Agency), Pharmacokinetics</li>
-<li>**Expertise**: Regulatory pharmacology, PBPK in DDI, EMA guidelines</li>
-<li>**Key Publications**:</li>
-<li>Roma A, et al. EMA guideline on PBPK modeling for DDI predictions. *EMA Scientific Guidance*, 2025-02</li>
-<li>Regulatory acceptance of PBPK models in Europe: lessons learned. *Clin Pharmacol Ther*, 2024-09</li>
-<li>**Role**: EMA PBPK Working Party; ICH E4, E11 guideline development</li>
-</ul>
-<hr>
-<h4>Piet **Wert** (PhD)</h4>
-<ul>
-<li>**Affiliation**: Utrecht University / Lapula Partners</li>
-<li>**Expertise**: PopPK, NONMEM, clinical trial simulation</li>
-<li>**Key Publications**:</li>
-<li>van der Wert P, et al. Advanced NONMEM applications for complex PopPK models. *J Clin Pharmacol*, 2024-07</li>
-<li>Clinical trial simulation using pharmacometric models. *CPT*, 2024-05</li>
-<li>**Role**: PAGE meeting organizer; NONMEM高级培训讲师</li>
-</ul>
-<hr>
-<h3>🇯🇵 Japan</h3>
-<hr>
-<h4>Yoshiro **Saitoh** (PhD)</h4>
-<ul>
-<li>**Affiliation**: Tohoku University / PMDA (Pharmaceuticals and Medical Devices Agency) Consultant</li>
-<li>**Expertise**: Regulatory science, PopPK, pediatric pharmacology</li>
-<li>**Key Publications**:</li>
-<li>Saitoh Y, et al. PMDA perspectives on quantitative pharmacology in drug development. *Jpn J Clin Pharmacol*, 2024-11</li>
-<li>Pediatric pharmacokinetics: developmental changes and modeling considerations. *Drug Metab Pharmacokinet*, 2024-08</li>
-<li>**Role**: PMDA定量药理审查顾问; Japanese Society of Clinical Pharmacology</li>
-</ul>
-<hr>
-<h4>Kenji **Hiroshige** (PhD)</h4>
-<ul>
-<li>**Affiliation**: Osaka University / Eisai</li>
-<li>**Expertise**: PK/PD, oncology modeling, exposure-response analysis</li>
-<li>**Key Publications**:</li>
-<li>Hiroshige K, et al. Exposure-response modeling in anti-cancer drug development. *J Pharmacol Exp Ther*, 2024-10</li>
-<li>Model-informed dose selection in early-phase oncology trials. *Clin Cancer Res*, 2025-01</li>
-<li>**Role**: Japanese Society of Quantitative Pharmacology Board Member</li>
-</ul>
-<hr>
-<h3>🇦🇺 Australia / Global</h3>
-<hr>
-<h4>Andrew **Mull** (PhD)</h4>
-<ul>
-<li>**Affiliation**: University of Queensland / Certara</li>
-<li>**Expertise**: PBPK, absorption modeling, software development (GastroPlus)</li>
-<li>**Key Publications**:</li>
-<li>Mull A, et al. Physiologically-based absorption modeling in oral drug delivery. *Adv Drug Deliv Rev*, 2024-12</li>
-<li>Integration of PBPK with clinical trial simulation. *CPT*, 2024-08</li>
-<li>**Role**: Editorial Board, *CPT-PSP*; Annual Page Meeting faculty</li>
-</ul>
-<hr>
-<h3>Key Organizations & Roles</h3>
-<table><thead>
-<tr><td>Organization</td><td>Role</td><td>Focus Area</td></tr>
-<tr><td>FDA/CDER/OCP</td><td>Regulatory</td><td>US drug approval, MIDD pilot</td></tr>
-<tr><td>EMA/PDCO</td><td>Regulatory</td><td>EU drug approval, pediatric</td></tr>
-<tr><td>PMDA</td><td>Regulatory</td><td>Japan drug approval</td></tr>
-<tr><td>NMPA/CDE</td><td>Regulatory</td><td>China drug approval</td></tr>
-<tr><td>ASCPT</td><td>Professional Society</td><td>Annual meeting, education</td></tr>
-<tr><td>ACCP</td><td>Professional Society</td><td>Global education, certification</td></tr>
-<tr><td>PAGE</td><td>Working Group</td><td>PopPK methodology</td></tr>
-<tr><td>ACoP</td><td>Conference</td><td>Pharmacometrics</td></tr>
-<tr><td>ICH</td><td>Harmonization</td><td>E4, E11, E14 guidelines</td></tr>
-</tbody></table>
-<hr>
-<p>[→ 查看国内专家](domestic.html) | [→ 返回首页](/experts/index.html)</p></div>
+<div class="sec-header"><h1>👥 International Expert Directory</h1><p>Key experts in Clinical Pharmacology and Quantitative Pharmacology (2023-2025)</p></div><div class="card-grid"><div class="article-card" data-tag="international"><div class="card-meta"><span class="card-status s-new">新增</span><span class="card-source">CPT:PSP</span></div><div class="card-title"><a href="https://ascpt.onlinelibrary.wiley.com/doi/10.1002/psp4.70214" target="_blank" rel="noopener">Karlsson: 符号神经网络学习疾病进展模型中的协变量关系</a></div><div class="card-summary">利用符号神经网络自动发现疾病进展模型中的协变量关系，将机器学习与传统药理计量学方法结合</div><div class="card-footer"><span class="card-date">2025</span><a class="card-link" href="https://ascpt.onlinelibrary.wiley.com/doi/10.1002/psp4.70214" target="_blank" rel="noopener">阅读 →</a></div></div>
+<div class="article-card" data-tag="international"><div class="card-meta"><span class="card-status s-new">新增</span><span class="card-source">Clin Transl Sci</span></div><div class="card-title"><a href="https://pmc.ncbi.nlm.nih.gov/articles/PMC11984503/" target="_blank" rel="noopener">Gobburu: 大语言模型在药物发现与研发中的应用</a></div><div class="card-summary">系统综述大语言模型在药物发现与研发中的应用，探讨LLM在临床药理学和转化医学中的潜力与局限</div><div class="card-footer"><span class="card-date">2025</span><a class="card-link" href="https://pmc.ncbi.nlm.nih.gov/articles/PMC11984503/" target="_blank" rel="noopener">阅读 →</a></div></div>
+<div class="article-card" data-tag="international"><div class="card-meta"><span class="card-status s-old">收录</span><span class="card-source">AAPS J</span></div><div class="card-title"><a href="https://pmc.ncbi.nlm.nih.gov/articles/PMC2691472/" target="_blank" rel="noopener">Karlsson: BLQ数据处理的M3方法</a></div><div class="card-summary">系统讨论混合效应模型中低于定量下限（BLQ）数据的处理方法，特别是M3法，已成为PopPK分析中BLQ数据处理的标准方法</div><div class="card-footer"><span class="card-date">2009</span><a class="card-link" href="https://pmc.ncbi.nlm.nih.gov/articles/PMC2691472/" target="_blank" rel="noopener">阅读 →</a></div></div>
+<div class="article-card" data-tag="international"><div class="card-meta"><span class="card-status s-old">收录</span><span class="card-source">Br J Clin Pharmacol</span></div><div class="card-title"><a href="https://pmc.ncbi.nlm.nih.gov/articles/PMC6989251/" target="_blank" rel="noopener">Holford: 目标浓度干预（TCI）——药效学原则</a></div><div class="card-summary">Nick Holford提出的目标浓度干预（TCI）理论，将TDM从被动监测提升为主动的、基于PK/PD原则的个体化给药策略</div><div class="card-footer"><span class="card-date">2020</span><a class="card-link" href="https://pmc.ncbi.nlm.nih.gov/articles/PMC6989251/" target="_blank" rel="noopener">阅读 →</a></div></div>
+<div class="article-card" data-tag="international"><div class="card-meta"><span class="card-status s-old">收录</span><span class="card-source">Br J Clin Pharmacol</span></div><div class="card-title"><a href="https://pmc.ncbi.nlm.nih.gov/articles/PMC4294071/" target="_blank" rel="noopener">Mentre: 群体PK/PD最优设计方法与软件</a></div><div class="card-summary">综述群体PK/PD研究的最优设计方法（D-最优、ED-最优），介绍PFIM/PopED等设计评估软件工具，指导高效的采样策略</div><div class="card-footer"><span class="card-date">2014</span><a class="card-link" href="https://pmc.ncbi.nlm.nih.gov/articles/PMC4294071/" target="_blank" rel="noopener">阅读 →</a></div></div>
+<div class="article-card" data-tag="international"><div class="card-meta"><span class="card-status s-old">收录</span><span class="card-source">J Pharm Sci</span></div><div class="card-title"><a href="https://pubmed.ncbi.nlm.nih.gov/30385284/" target="_blank" rel="noopener">Wang: FDA PBPK建模监管科学进展</a></div><div class="card-summary">FDA临床药理办公室PBPK领域负责人回顾FDA在PBPK监管科学方面的最新进展，包括DDI、儿科和特殊人群中的PBPK应用案例</div><div class="card-footer"><span class="card-date">2018</span><a class="card-link" href="https://pubmed.ncbi.nlm.nih.gov/30385284/" target="_blank" rel="noopener">阅读 →</a></div></div>
+<div class="article-card" data-tag="international"><div class="card-meta"><span class="card-status s-classic">经典</span><span class="card-source">Metrum RG</span></div><div class="card-title"><a href="https://www.metrumrg.com/wp-content/uploads/2019/11/ACoP10-Tutorial-3-MetrumRG.pdf" target="_blank" rel="noopener">Metrum: 完全开源药理计量学工具集</a></div><div class="card-summary">展示如何用R + mrgsolve + Stan/Torsten构建完全开源的药理计量学工作流，涵盖建模、模拟和贝叶斯推断</div><div class="card-footer"><span class="card-date">2019</span><a class="card-link" href="https://www.metrumrg.com/wp-content/uploads/2019/11/ACoP10-Tutorial-3-MetrumRG.pdf" target="_blank" rel="noopener">阅读 →</a></div></div></div>
 </div>
-<footer>© 2025 定量药理与临床药理前沿追踪 · 内容版权归属原作者 · <a href="https://github.com/seansilencer/quantitative-pharma-blog">GitHub</a></footer>
+<footer>© 2025 定量药理与临床药理前沿追踪 · <a href="https://github.com/seansilencer/quantitative-pharma-blog">GitHub</a></footer>
 </div>
 <script>
-function toggleNav(id){var el=document.getElementById('nav-'+id);if(el){el.style.display=el.style.display==='block'?'none':'block';var parent=document.getElementById('nav-item-'+id);if(parent)parent.classList.toggle('open')}}
+function toggleNav(id){
+  var el=document.getElementById('nav-'+id);
+  if(el){el.style.display=el.style.display==='block'?'none':'block';
+  var parent=document.getElementById('nav-item-'+id);
+  if(parent)parent.classList.toggle('open')}}
 function setActive(path){
-  var normalizedPath = path.startsWith('/') ? path : '/' + path;
+  var np=path.startsWith('/')?path:'/'+path;
   document.querySelectorAll('.nav-link').forEach(function(el){
     el.classList.remove('active');
-    var href = el.getAttribute('href') || '';
-    var normalizedHref = href.startsWith('/') ? href : '/' + href;
-    if(normalizedHref === normalizedPath){el.classList.add('active');var p=el.closest('.nav-children');if(p){p.style.display='block';var pi=p.previousElementSibling;if(pi&&pi.classList.contains('nav-link'))pi.classList.add('open')}}
+    var href=el.getAttribute('href')||'';
+    var nh=href.startsWith('/')?href:'/'+href;
+    if(nh===np){
+      el.classList.add('active');
+      var p=el.closest('.nav-children');
+      if(p){p.style.display='block';var pi=p.previousElementSibling;
+      if(pi&&pi.classList.contains('nav-link'))pi.classList.add('open')}
+    }
   });
   var crumbs=document.getElementById('breadcrumb');
   if(crumbs){
@@ -317,7 +179,17 @@ function setActive(path){
     crumbs.innerHTML=html;
   }
 }
+function filterCards(tag){
+  var cards=document.querySelectorAll('.article-card');
+  cards.forEach(function(c){
+    var show=(tag==='all'||c.getAttribute('data-tag')===tag);
+    c.style.display=show?'flex':'none';
+  });
+  document.querySelectorAll('.filter-tag').forEach(function(t){
+    t.classList.toggle('active',t.getAttribute('data-tag')===tag);
+  });
+}
 </script>
-<script>setActive("experts/international.html")</script>
+<script>setActive("/experts/international.html")</script>
 </body>
 </html>
