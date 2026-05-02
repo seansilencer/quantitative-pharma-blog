@@ -56,17 +56,12 @@ nav:
       - 特殊人群药理: clinical-pharmacology/special-populations.md
   - 法规与指南: regulations/index.md
   - 会议与培训: conferences/index.md
-  - 学习资源:
-      - 入门教程: tutorials/introduction.md
-      - 进阶教程: tutorials/advanced.md
-      - 实战资源: tutorials/practice.md
-      - 专家分享: tutorials/expert-sharing.md
+  - 📚 期刊推荐: resources/journals.md
+  - 🔧 工具软件: resources/tools.html
+  - 学习资源: tutorials/index.md
   - 专家名录:
       - 国内专家: experts/domestic.md
       - 国际专家: experts/international.md
-  - 学术资源:
-      - 期刊推荐: resources/journals.md
-      - 工具软件: resources/tools.md
 
 # Markdown 扩展
 markdown_extensions:
