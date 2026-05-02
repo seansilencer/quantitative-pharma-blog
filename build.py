@@ -26,35 +26,32 @@ TAG_MAP = {
     "international": "👥 国际专家与团队",
 }
 
-# ── 导航配置（新增学习资源） ───────────────────────────
+# ── 导航配置（v3） ─────────────────────────────────────
 NAV_TREE = [
     {"id": "home",   "label": "🏠 首页",              "file": "/index.html"},
-    {"id": "qpm",   "label": "📐 定量药理建模",       "file": "/quantitative-pharmacology/index.html", "children": [
-        {"id": "qpm-pbpk",  "label": "PBPK 建模",   "file": "/quantitative-pharmacology/pbpk.html"},
+    {"id": "qpm",   "label": "📐 定量药理建模",        "file": "/quantitative-pharmacology/index.html", "children": [
+        {"id": "qpm-pbpk",  "label": "PBPK 建模",    "file": "/quantitative-pharmacology/pbpk.html"},
         {"id": "qpm-poppk", "label": "PopPK 建模",   "file": "/quantitative-pharmacology/poppk.html"},
         {"id": "qpm-pkbd",  "label": "PK/PD 关联",   "file": "/quantitative-pharmacology/pkbd.html"},
     ]},
-    {"id": "cp",    "label": "💊 临床药理",            "file": "/clinical-pharmacology/index.html", "children": [
+    {"id": "cp",    "label": "💊 临床药理",             "file": "/clinical-pharmacology/index.html", "children": [
         {"id": "cp-innov",  "label": "创新药临床药理", "file": "/clinical-pharmacology/innovative-drugs.html"},
         {"id": "cp-generic","label": "仿制药 / BE",    "file": "/clinical-pharmacology/generic-drugs.html"},
         {"id": "cp-special","label": "特殊人群药理",   "file": "/clinical-pharmacology/special-populations.html"},
     ]},
-    {"id": "articles", "label": "📚 文章总目录",        "file": "/articles/index.html"},
-    {"id": "regulations","label":"📋 法规与指南",      "file": "/regulations/index.html"},
-    {"id": "conferences","label":"🎓 会议与培训",      "file": "/conferences/index.html"},
-    {"id": "tutorials", "label": "📖 学习资源",        "file": "/tutorials/index.html", "children": [
-        {"id": "tut-intro",    "label": "入门教程",     "file": "/tutorials/introduction.md"},
-        {"id": "tut-advanced", "label": "进阶教程",     "file": "/tutorials/advanced.md"},
-        {"id": "tut-practice", "label": "实战资源",     "file": "/tutorials/practice.md"},
-        {"id": "tut-expert",   "label": "专家分享",     "file": "/tutorials/expert-sharing.md"},
+    {"id": "regulations","label":"📋 法规与指南",       "file": "/regulations/index.html"},
+    {"id": "conferences","label":"🎓 会议与培训",       "file": "/conferences/index.html"},
+    {"id": "journals",  "label": "📚 期刊推荐",         "file": "/resources/journals.html"},
+    {"id": "tools",     "label": "🔧 工具软件",         "file": "/resources/tools.html"},
+    {"id": "tutorials", "label": "📖 学习资源",         "file": "/tutorials/index.html", "children": [
+        {"id": "tut-intro",    "label": "入门教程",    "file": "/tutorials/index.html"},
+        {"id": "tut-advanced", "label": "进阶教程",   "file": "/tutorials/index.html"},
+        {"id": "tut-practice", "label": "实战资源",    "file": "/tutorials/index.html"},
+        {"id": "tut-expert",   "label": "专家分享",    "file": "/tutorials/index.html"},
     ]},
-    {"id": "experts", "label": "👥 专家名录",           "file": "/experts/index.html", "children": [
+    {"id": "experts",  "label": "👥 专家名录",          "file": "/experts/index.html", "children": [
         {"id": "exp-dom",  "label": "国内专家",        "file": "/experts/domestic.html"},
-        {"id": "exp-intl", "label": "国际专家",       "file": "/experts/international.html"},
-    ]},
-    {"id": "resources", "label": "🔧 学术资源",         "file": "/resources/index.html", "children": [
-        {"id": "res-journals","label": "期刊推荐",     "file": "/resources/journals.html"},
-        {"id": "res-tools",  "label": "工具软件",     "file": "/resources/tools.html"},
+        {"id": "exp-intl", "label": "国际专家",        "file": "/experts/international.html"},
     ]},
 ]
 
@@ -1034,6 +1031,193 @@ def build_tutorials_page():
     print('  ✓ tutorials/index.html')
 
 # ── main ─────────────────────────────────────────────────
+# ── 期刊推荐页（卡片分组布局） ──────────────────────────
+JOURNAL_CATEGORIES = [
+    {
+        "label": "🌐 国际顶级期刊",
+        "color": "#4caf50",
+        "items": [
+            {"name": "Clinical Pharmacology & Therapeutics (CPT)", "if_": "~7.0",
+             "desc": "临床药理旗舰期刊，监管认可度最高，FDA/EMA 申报常引用"},
+            {"name": "Clinical Pharmacokinetics", "if_": "~5.5",
+             "desc": "PK/PD 经典期刊，理论与应用并重"},
+            {"name": "Drug Metabolism and Disposition", "if_": "~3.8",
+             "desc": "代谢与转运体定量研究首选"},
+            {"name": "Pharmaceutical Research", "if_": "~4.4",
+             "desc": "药剂学与建模方法综合期刊"},
+            {"name": "Journal of Clinical Pharmacology", "if_": "~3.0",
+             "desc": "临床药理综合，含大量 PopPK 建模文章"},
+        ]
+    },
+    {
+        "label": "📊 定量药理专刊",
+        "color": "#2196f3",
+        "items": [
+            {"name": "CPT: Pharmacometrics & Systems Pharmacology", "if_": "~3.5",
+             "desc": "PopPK/PD 建模专刊，NONMEM 方法论文章集中"},
+            {"name": "Journal of Pharmacokinetics & Pharmacodynamics", "if_": "~2.5",
+             "desc": "PK/PD 理论与建模方法学"},
+        ]
+    },
+    {
+        "label": "🇨🇳 中文核心期刊",
+        "color": "#ff9800",
+        "items": [
+            {"name": "药学学报", "if_": "中文核心",
+             "desc": "药物代谢与定量研究权威，PBPK 建模文章多"},
+            {"name": "中国临床药理学杂志", "if_": "中文核心",
+             "desc": "BE/PopPK 研究首选，含大量国内临床药理数据"},
+            {"name": "中国新药杂志", "if_": "中文核心",
+             "desc": "新药研发综合期刊，定量药理与临床研究并重"},
+            {"name": "药物流行病学", "if_": "中文核心",
+             "desc": "真实世界研究与药物流行病学"},
+        ]
+    },
+    {
+        "label": "🔍 检索与管理工具",
+        "color": "#9c27b0",
+        "items": [
+            {"name": "PubMed", "if_": "—",
+             "desc": "最全生物医学文献库，支持 PMID 直接跳转"},
+            {"name": "Embase", "if_": "—",
+             "desc": "药物文献覆盖最广，DDI 相关研究首选"},
+            {"name": "Scopus", "if_": "—",
+             "desc": "综合引文分析工具"},
+            {"name": "Zotero", "if_": "免费",
+             "desc": "免费开源文献管理，PDF 管理与引文生成"},
+            {"name": "EndNote", "if_": "机构版",
+             "desc": "机构授权，Word/LaTeX 集成最强"},
+        ]
+    },
+]
+
+def build_journals_page():
+    cats = []
+    for cat in JOURNAL_CATEGORIES:
+        cards = []
+        for item in cat["items"]:
+            cards.append(
+                '<div class="article-card" style="cursor:default">'
+                '<div class="card-meta">'
+                '<span class="card-status" style="background:linear-gradient(135deg,' + cat["color"] + '22,' + cat["color"] + '44);color:' + cat["color"] + '">' + item["if_"] + '</span>'
+                '</div>'
+                '<div class="card-title" style="font-size:.9rem">' + item["name"] + '</div>'
+                '<div class="card-summary">' + item["desc"] + '</div>'
+                '</div>'
+            )
+        cats.append(
+            '<div style="margin-bottom:2rem">'
+            '<div style="display:flex;align-items:center;gap:.5rem;margin-bottom:.8rem;padding-bottom:.5rem;border-bottom:2px solid ' + cat["color"] + '">'
+            '<span style="font-size:.85rem;font-weight:700;color:' + cat["color"] + '">' + cat["label"] + '</span>'
+            '</div>'
+            '<div class="card-grid">' + ''.join(cards) + '</div>'
+            '</div>'
+        )
+    body = (
+        '<div class="sec-header"><h1>📚 期刊推荐</h1>'
+        '<p>精选定量药理与临床药理领域核心期刊，标注影响因子与收录定位，助你快速定位目标读物。</p>'
+        '<p class="updated">IF 数据来源：Journal Citation Reports 2024 / 中文核心期刊要目 2023</p></div>'
+        + ''.join(cats) +
+        '<blockquote>期刊选择建议：根据研究内容选择匹配期刊，优先考虑同行评审速度和接收率。中文期刊需关注「北大核心」与「科技核心」目录。</blockquote>'
+    )
+    html = wrap(body, '/resources/journals.html', '期刊推荐', '定量药理与临床药理核心期刊推荐')
+    (DST / 'resources').mkdir(parents=True, exist_ok=True)
+    with open(DST / 'resources' / 'journals.html', 'w', encoding='utf-8') as f:
+        f.write(html)
+    print('  ✓ journals.html (card layout)')
+
+# ── 会议与培训页（卡片+表格布局） ───────────────────────
+CONF_DOMESTIC = [
+    {"name": "全国临床药理学学术年会", "time": "每年10月", "loc": "轮流举办",
+     "desc": "中华医学会临床药理学分会主办，定量药理专题会场，论文报告与操作培训"},
+    {"name": "中国定量药理学大会", "time": "每年7月", "loc": "轮流举办",
+     "desc": "国内定量药理领域最专业会议，PBPK/PopPK/PKPD 建模技术研讨与案例分析"},
+    {"name": "DIA中国年会", "time": "每年5月", "loc": "北京/上海",
+     "desc": "药物研发全链条会议，设有定量药理分会场，国际与国内专家参与"},
+    {"name": "北京大学临床药理年会", "time": "每年6月", "loc": "北京",
+     "desc": "聚焦临床药理研究方法、监管要求与案例分析，附实际操作工作坊"},
+    {"name": "药学学术年会（临床药理分场）", "time": "每年8-9月", "loc": "轮流举办",
+     "desc": "中国药学会主办，临床药理与定量药理研究进展报告"},
+]
+CONF_INTL = [
+    {"name": "ASCPT Annual Meeting", "time": "每年3月", "loc": "美国",
+     "desc": "临床药理与定量药理领域顶级会议，年度最佳论文颁奖，PBPK/PopPK 分会"},
+    {"name": "PAGE (Population Approach Group)", "time": "每年6月", "loc": "欧洲",
+     "desc": "PopPK/PD 建模方法学专题，工作坊与论文报告，方法学论文金标准"},
+    {"name": "ACoP (American Conference on Pharmacometrics)", "time": "每年10月", "loc": "美国",
+     "desc": "定量药理建模与仿真，药物研发中的应用案例，工业界参与度高"},
+    {"name": "ACCP Global Conference", "time": "每年10月", "loc": "轮流",
+     "desc": "全球临床药理教育、研究与实践进展"},
+    {"name": "AAPS (American Association of Pharmaceutical Scientists)", "time": "每年11月", "loc": "美国",
+     "desc": "药物科学主流会议，含 PK/PD 与定量药理方向"},
+]
+CONF_TRAIN = [
+    {"name": "NMPA/CDE 指导原则培训视频", "time": "随时", "loc": "CDE官网",
+     "desc": "定量药理相关指导原则官方解读视频，含案例说明"},
+    {"name": "FDA MIDD案例库", "time": "随时", "loc": "FDA Website",
+     "desc": "MIDD 试点案例视频讲解，监管视角案例分析"},
+    {"name": "PAGE Meeting Recordings", "time": "随时", "loc": "PAGE官网",
+     "desc": "历年 PAGE 会议报告录像，含方法学与应用案例"},
+    {"name": "Certara Academy", "time": "随到随学", "loc": "Certara",
+     "desc": "GastroPlus、NONMEM 官方在线培训，证书认证"},
+    {"name": "University of Pittsburgh PopPK Course", "time": "Coursera", "loc": "公开课",
+     "desc": "PopPK 基础与进阶课程，英文授课配字幕"},
+]
+UPCOMING = [
+    {"name": "ASCPT 2025", "time": "2025-03-18~21", "loc": "美国 奥斯汀"},
+    {"name": "PAGE 2025", "time": "2025-06", "loc": "荷兰 阿姆斯特丹"},
+    {"name": "ACoP 2025", "time": "2025-10", "loc": "美国"},
+    {"name": "全国临床药理学学术年会 2025", "time": "2025-10（预计）", "loc": "待定"},
+    {"name": "中国定量药理学大会 2025", "time": "2025-07（预计）", "loc": "待定"},
+]
+
+def _conf_table(items, color):
+    rows = []
+    for it in items:
+        rows.append(
+            '<tr><td style="font-weight:600;color:var(--text)">' + it["name"] + '</td>'
+            '<td style="color:' + color + ';font-weight:600">' + it["time"] + '</td>'
+            '<td style="color:var(--muted)">' + it["loc"] + '</td>'
+            '<td style="font-size:.8rem;color:#5a6178">' + it["desc"] + '</td></tr>'
+        )
+    return ('<div class="table-wrap"><table><thead><tr><th>会议名称</th><th>时间</th><th>地点</th><th>主要内容</th></tr></thead><tbody>'
+            + ''.join(rows) + '</tbody></table></div>')
+
+def build_conferences_page():
+    upcoming = ''.join(
+        '<div class="article-card" style="border-left:3px solid #4caf50">'
+        '<div class="card-meta"><span class="card-status s-new">近期</span></div>'
+        '<div class="card-title">' + e["name"] + '</div>'
+        '<div class="card-summary">📅 ' + e["time"] + ' · 📍 ' + e["loc"] + '</div>'
+        '</div>'
+        for e in UPCOMING
+    )
+    body = (
+        '<div class="sec-header"><h1>🎓 会议与培训</h1>'
+        '<p>精选国内外临床药理与定量药理领域学术会议及在线培训资源，支持职业持续教育。</p>'
+        '<p class="updated">会议时间仅供参考，以官方发布为准；建议提前6个月关注注册信息</p></div>'
+        '<h2 class="section-title">📅 近期会议预告 (2025)</h2>'
+        '<div class="card-grid" style="margin-bottom:2rem">' + upcoming + '</div>'
+        '<div style="margin-bottom:2rem">'
+        '<div style="display:flex;align-items:center;gap:.5rem;margin-bottom:.8rem;padding-bottom:.5rem;border-bottom:2px solid #e53935">'
+        '<span style="font-size:.85rem;font-weight:700;color:#e53935">🇨🇳 国内会议</span></div>'
+        + _conf_table(CONF_DOMESTIC, "#e53935") + '</div>'
+        '<div style="margin-bottom:2rem">'
+        '<div style="display:flex;align-items:center;gap:.5rem;margin-bottom:.8rem;padding-bottom:.5rem;border-bottom:2px solid #1565c0">'
+        '<span style="font-size:.85rem;font-weight:700;color:#1565c0">🌐 国际会议</span></div>'
+        + _conf_table(CONF_INTL, "#1565c0") + '</div>'
+        '<div style="margin-bottom:2rem">'
+        '<div style="display:flex;align-items:center;gap:.5rem;margin-bottom:.8rem;padding-bottom:.5rem;border-bottom:2px solid #2e7d32">'
+        '<span style="font-size:.85rem;font-weight:700;color:#2e7d32">📚 在线培训资源</span></div>'
+        + _conf_table(CONF_TRAIN, "#2e7d32") + '</div>'
+    )
+    html = wrap(body, '/conferences/index.html', '会议与培训', '定量药理与临床药理学术会议与培训资源')
+    (DST / 'conferences').mkdir(parents=True, exist_ok=True)
+    with open(DST / 'conferences' / 'index.html', 'w', encoding='utf-8') as f:
+        f.write(html)
+    print('  ✓ conferences/index.html (card+table layout)')
+
+
 def main():
     print('\n=== Building site: docs/ → site/ (v2) ===\n')
     DST.mkdir(exist_ok=True)
@@ -1041,6 +1225,8 @@ def main():
     build_home()
     build_tools_page()
     build_tutorials_page()
+    build_journals_page()
+    build_conferences_page()
 
     n = 0
     for md_file in SRC.rglob('*.md'):
@@ -1048,6 +1234,10 @@ def main():
         if rel.parts[0] in ('.', 'stylesheets'):
             continue
         if rel.name == 'index.md' and len(rel.parts) == 1:
+            continue
+        # Skip pages with custom builders
+        _ps = str(rel).replace('\\', '/')
+        if _ps.startswith('tutorials/') or _ps.replace('.md','') in ('conferences/index', 'resources/journals'):
             continue
         dst_file = DST / rel.with_suffix('.html')
         path_str = str(rel).replace('\\', '/').replace('.md', '')
